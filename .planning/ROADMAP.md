@@ -35,8 +35,10 @@ Success criteria:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md - Build extraction foundation (contracts, settings, mock-data, Wave 0 tests)
-- [ ] 01-02-PLAN.md - Add callable service and thin framework adapters
+- [x] 01-01-PLAN.md - Build extraction foundation (contracts, settings, mock-data, Wave 0 tests)
+- [x] 01-02-PLAN.md - Add callable service and thin framework adapters
+
+Status: Complete (2026-03-27)
 
 **UI hint**: no
 
@@ -109,4 +111,4 @@ Success criteria:
 **UI hint**: no
 
 ---
-*Last updated: 2026-03-27 after roadmap creation*
+*Last updated: 2026-03-27 after phase 1 execution*

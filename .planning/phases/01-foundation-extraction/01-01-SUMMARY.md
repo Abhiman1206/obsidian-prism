@@ -56,7 +56,7 @@ completed: 2026-03-27
 2. **Task 2: Implement non-interactive settings and redaction helpers** - `353853f` (feat)
 3. **Task 3: Unify duplicated mock document provider and bootstrap Wave 0 tests** - `9b9fabf` (test)
 
-**Plan metadata:** pending
+**Plan metadata:** `92baa20` (docs: complete plan)
 
 ## Files Created/Modified
 - `src/loan_agents/domain/contracts.py` - Shared PipelineInput and PipelineResult contracts.

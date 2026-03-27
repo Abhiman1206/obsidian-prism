@@ -7,14 +7,14 @@
 
 ### Project Structure
 
-- [ ] **ARCH-01**: Code from the notebook is extracted into a Python package with separated modules for domain, tools, orchestration, and runtime.
+- [x] **ARCH-01**: Code from the notebook is extracted into a Python package with separated modules for domain, tools, orchestration, and runtime.
 - [ ] **ARCH-02**: A single CLI/API entry path can run either CrewAI or LangGraph orchestration mode from the same input contract.
 - [ ] **ARCH-03**: Shared domain models define normalized output contracts used by both framework implementations.
 
 ### Security and Configuration
 
-- [ ] **SECU-01**: Runtime loads required secrets/configuration from environment or secret manager without interactive prompts.
-- [ ] **SECU-02**: Startup validation fails fast when required config is missing or invalid.
+- [x] **SECU-01**: Runtime loads required secrets/configuration from environment or secret manager without interactive prompts.
+- [x] **SECU-02**: Startup validation fails fast when required config is missing or invalid.
 - [ ] **SECU-03**: Sensitive values are masked in logs and error outputs.
 
 ### Reliability and Safety
@@ -58,11 +58,11 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ARCH-01 | Phase 1 | Pending |
+| ARCH-01 | Phase 1 | Complete |
 | ARCH-02 | Phase 2 | Pending |
 | ARCH-03 | Phase 2 | Pending |
-| SECU-01 | Phase 1 | Pending |
-| SECU-02 | Phase 1 | Pending |
+| SECU-01 | Phase 1 | Complete |
+| SECU-02 | Phase 1 | Complete |
 | SECU-03 | Phase 3 | Pending |
 | RELI-01 | Phase 3 | Pending |
 | RELI-02 | Phase 3 | Pending |
@@ -84,4 +84,4 @@
 
 ---
 *Requirements defined: 2026-03-27*
-*Last updated: 2026-03-27 after initial definition*
+*Last updated: 2026-03-27 after phase 1 completion*

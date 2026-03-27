@@ -12,13 +12,15 @@ Deliver reliable and auditable loan-origination agent decisions with determinist
 
 ### Validated
 
-(None yet - ship to validate)
+- [x] Notebook extraction baseline validated in Phase 1 (contracts, orchestration stubs, runtime modules)
+- [x] Non-interactive environment-based secret handling validated in Phase 1
+- [x] Fail-fast configuration validation validated in Phase 1
 
 ### Active
 
-- [ ] Convert notebook logic into a modular Python package with clear boundaries.
-- [ ] Add production guardrails: secrets handling, retry/rate-limit controls, and structured error reports.
-- [ ] Add automated tests, CI checks, and deployment-ready run paths.
+- [ ] Expand extracted package to full dual-orchestrator parity and production runtime controls.
+- [ ] Add production guardrails: retry/rate-limit controls, and structured error reports.
+- [ ] Add broader automated tests, CI checks, and deployment-ready run paths.
 
 ### Out of Scope
 
@@ -62,4 +64,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-27 after initialization*
+*Last updated: 2026-03-27 after phase 1 completion*

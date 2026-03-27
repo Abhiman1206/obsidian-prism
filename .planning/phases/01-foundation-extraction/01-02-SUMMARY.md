@@ -59,7 +59,7 @@ completed: 2026-03-27
 2. **Task 2: Add thin orchestration adapters for CrewAI and LangGraph** - `957f5a2` (feat)
 3. **Task 3: Document extraction entrypoint and execute foundation smoke verification** - `41fd51d` (docs)
 
-**Plan metadata:** pending
+**Plan metadata:** `92baa20` (docs: complete plan)
 
 ## Files Created/Modified
 - `src/loan_agents/runtime/service.py` - Deterministic callable entrypoint and mode routing.
