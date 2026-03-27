@@ -32,6 +32,12 @@ Success criteria:
 3. Configuration validation fails fast with clear messages for missing required settings.
 4. Existing notebook scenarios can be invoked through module entry points.
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md - Build extraction foundation (contracts, settings, mock-data, Wave 0 tests)
+- [ ] 01-02-PLAN.md - Add callable service and thin framework adapters
+
 **UI hint**: no
 
 ## Phase 2: Dual-Orchestrator Core
