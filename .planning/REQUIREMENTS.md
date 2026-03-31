@@ -35,8 +35,8 @@
 
 - [ ] **QUAL-01**: Unit tests cover tool logic, risk/compliance rules, and runtime wrapper behavior.
 - [ ] **QUAL-02**: Integration tests verify parity-critical scenarios across CrewAI and LangGraph paths.
-- [ ] **QUAL-03**: CI pipeline enforces lint, type check, and tests before merge.
-- [ ] **QUAL-04**: Project ships with containerized runtime definition and reproducible dependency lock.
+- [x] **QUAL-03**: CI pipeline enforces lint, type check, and tests before merge.
+- [x] **QUAL-04**: Project ships with containerized runtime definition and reproducible dependency lock.
 
 ## v2 Requirements
 
@@ -74,8 +74,8 @@
 | OPER-04 | Phase 3 | Pending |
 | QUAL-01 | Phase 4 | Complete |
 | QUAL-02 | Phase 4 | Complete |
-| QUAL-03 | Phase 5 | Pending |
-| QUAL-04 | Phase 5 | Pending |
+| QUAL-03 | Phase 5 | Complete |
+| QUAL-04 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 18 total
@@ -84,4 +84,4 @@
 
 ---
 *Requirements defined: 2026-03-27*
-*Last updated: 2026-03-31 after phase 2 completion*
+*Last updated: 2026-03-31 after phase 5 completion*
