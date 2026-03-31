@@ -1,4 +1,8 @@
+import pytest
+
 from loan_agents.runtime.api import health, readiness, run
+
+pytestmark = pytest.mark.deterministic_validation
 
 
 def test_health_returns_ok_service_payload() -> None:

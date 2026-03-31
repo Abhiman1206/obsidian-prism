@@ -1,6 +1,10 @@
 import time
 
+import pytest
+
 import loan_agents.runtime.service as service
+
+pytestmark = pytest.mark.deterministic_validation
 
 
 def _payload(correlation_id: str = "corr-default") -> dict[str, str]:
