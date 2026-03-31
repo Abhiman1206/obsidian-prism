@@ -133,6 +133,12 @@ Success criteria:
 3. Container build succeeds and starts service with required runtime settings.
 4. Release checklist documents smoke tests and rollback basics.
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 05-01-PLAN.md - Enforce deterministic CI quality gates and dependency lock workflow
+- [ ] 05-02-PLAN.md - Add container packaging artifacts and release smoke/rollback checklist
+
 **UI hint**: no
 
 ---
