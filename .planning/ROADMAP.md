@@ -58,8 +58,10 @@ Success criteria:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md - Normalize adapter outputs through shared contract helpers
-- [ ] 02-02-PLAN.md - Enforce single-input dual-mode service parity and sample matrix coverage
+- [x] 02-01-PLAN.md - Normalize adapter outputs through shared contract helpers
+- [x] 02-02-PLAN.md - Enforce single-input dual-mode service parity and sample matrix coverage
+
+Status: Complete (2026-03-31)
 
 **UI hint**: no
 
@@ -117,4 +119,4 @@ Success criteria:
 **UI hint**: no
 
 ---
-*Last updated: 2026-03-31 after phase 2 planning*
+*Last updated: 2026-03-31 after phase 2 execution*

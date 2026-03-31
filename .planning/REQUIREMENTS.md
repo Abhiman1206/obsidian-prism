@@ -8,8 +8,8 @@
 ### Project Structure
 
 - [x] **ARCH-01**: Code from the notebook is extracted into a Python package with separated modules for domain, tools, orchestration, and runtime.
-- [ ] **ARCH-02**: A single CLI/API entry path can run either CrewAI or LangGraph orchestration mode from the same input contract.
-- [ ] **ARCH-03**: Shared domain models define normalized output contracts used by both framework implementations.
+- [x] **ARCH-02**: A single CLI/API entry path can run either CrewAI or LangGraph orchestration mode from the same input contract.
+- [x] **ARCH-03**: Shared domain models define normalized output contracts used by both framework implementations.
 
 ### Security and Configuration
 
@@ -59,8 +59,8 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | ARCH-01 | Phase 1 | Complete |
-| ARCH-02 | Phase 2 | Pending |
-| ARCH-03 | Phase 2 | Pending |
+| ARCH-02 | Phase 2 | Complete |
+| ARCH-03 | Phase 2 | Complete |
 | SECU-01 | Phase 1 | Complete |
 | SECU-02 | Phase 1 | Complete |
 | SECU-03 | Phase 3 | Pending |
@@ -84,4 +84,4 @@
 
 ---
 *Requirements defined: 2026-03-27*
-*Last updated: 2026-03-27 after phase 1 completion*
+*Last updated: 2026-03-31 after phase 2 completion*

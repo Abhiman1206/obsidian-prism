@@ -15,10 +15,11 @@ Deliver reliable and auditable loan-origination agent decisions with determinist
 - [x] Notebook extraction baseline validated in Phase 1 (contracts, orchestration stubs, runtime modules)
 - [x] Non-interactive environment-based secret handling validated in Phase 1
 - [x] Fail-fast configuration validation validated in Phase 1
+- [x] Single service input contract now executes both CrewAI and LangGraph modes (validated in Phase 2)
+- [x] Shared normalized output contract is enforced across both orchestration adapters (validated in Phase 2)
 
 ### Active
 
-- [ ] Expand extracted package to full dual-orchestrator parity and production runtime controls.
 - [ ] Add production guardrails: retry/rate-limit controls, and structured error reports.
 - [ ] Add broader automated tests, CI checks, and deployment-ready run paths.
 
@@ -64,4 +65,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-27 after phase 1 completion*
+*Last updated: 2026-03-31 after phase 2 completion*
