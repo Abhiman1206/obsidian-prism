@@ -3,6 +3,7 @@
 from typing import Any
 
 from loan_agents.domain.contracts import PipelineInput
+from loan_agents.runtime.metrics import collect_run_metrics
 from loan_agents.runtime.service import run_pipeline
 from loan_agents.runtime.settings import load_settings
 
@@ -37,7 +38,12 @@ def run(request: dict[str, Any]) -> dict[str, Any]:
         "document_id": normalized.document_id,
         "mode": normalized.mode,
     }
+    correlation_id: str | None = None
     if "correlation_id" in request:
-        payload["correlation_id"] = str(request["correlation_id"])
+        correlation_id = str(request["correlation_id"])
+        payload["correlation_id"] = correlation_id
 
-    return run_pipeline(payload, mode)
+    result = run_pipeline(payload, mode)
+    if correlation_id and "metrics" not in result:
+        result["metrics"] = collect_run_metrics(correlation_id)
+    return result

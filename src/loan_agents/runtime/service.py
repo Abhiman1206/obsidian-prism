@@ -12,6 +12,12 @@ from loan_agents.runtime.execution_policy import (
 )
 from loan_agents.runtime.errors import build_failure
 from loan_agents.runtime.logging import log_failure_event, log_stage_event
+from loan_agents.runtime.metrics import (
+    collect_run_metrics,
+    record_failure_category,
+    record_retry,
+    record_stage_duration,
+)
 from loan_agents.runtime.settings import load_settings
 
 ALLOWED_MODES = {"crewai", "langgraph"}
@@ -30,6 +36,7 @@ def run_pipeline(input_payload: dict[str, Any], mode: str) -> dict[str, Any]:
     trace_id = correlation_id or "n/a"
 
     if mode not in ALLOWED_MODES:
+        record_failure_category(correlation_id=trace_id, category="invalid_mode")
         log_failure_event(
             correlation_id=trace_id,
             stage="dispatch",
@@ -37,7 +44,7 @@ def run_pipeline(input_payload: dict[str, Any], mode: str) -> dict[str, Any]:
             duration_ms=0,
             failure_category="invalid_mode",
         )
-        return build_failure(
+        failure = build_failure(
             status="failed",
             mode=mode,
             code="INVALID_MODE",
@@ -47,6 +54,9 @@ def run_pipeline(input_payload: dict[str, Any], mode: str) -> dict[str, Any]:
             stage="dispatch",
             correlation_id=correlation_id,
         )
+        if correlation_id:
+            failure["metrics"] = collect_run_metrics(trace_id)
+        return failure
 
     try:
         started_at = time.monotonic()
@@ -80,8 +90,16 @@ def run_pipeline(input_payload: dict[str, Any], mode: str) -> dict[str, Any]:
             status="success",
             duration_ms=max(0, int((time.monotonic() - started_at) * 1000)),
         )
-        return outcome.value
+        record_stage_duration(correlation_id=trace_id, stage="dispatch", duration_ms=outcome.duration_ms)
+        for _ in range(outcome.retry_count):
+            record_retry(correlation_id=trace_id)
+
+        result = outcome.value
+        if correlation_id:
+            result["metrics"] = collect_run_metrics(trace_id)
+        return result
     except ValueError as exc:
+        record_failure_category(correlation_id=trace_id, category="config")
         log_failure_event(
             correlation_id=trace_id,
             stage="dispatch",
@@ -90,7 +108,7 @@ def run_pipeline(input_payload: dict[str, Any], mode: str) -> dict[str, Any]:
             failure_category="config",
             metadata={"message": str(exc)},
         )
-        return build_failure(
+        failure = build_failure(
             status="failed",
             mode=mode,
             code="PIPELINE_ERROR",
@@ -100,12 +118,19 @@ def run_pipeline(input_payload: dict[str, Any], mode: str) -> dict[str, Any]:
             stage="dispatch",
             correlation_id=correlation_id,
         )
+        if correlation_id:
+            failure["metrics"] = collect_run_metrics(trace_id)
+        return failure
     except PolicyExecutionError as exc:
         code = "PIPELINE_ERROR"
         if exc.failure_category == "timeout":
             code = "TIMEOUT"
         elif exc.failure_category == "rate_limit":
             code = "RATE_LIMIT"
+
+        record_failure_category(correlation_id=trace_id, category=exc.failure_category)
+        for _ in range(exc.retry_count):
+            record_retry(correlation_id=trace_id)
 
         log_failure_event(
             correlation_id=trace_id,
@@ -116,7 +141,7 @@ def run_pipeline(input_payload: dict[str, Any], mode: str) -> dict[str, Any]:
             metadata={"message": str(exc)},
         )
 
-        return build_failure(
+        failure = build_failure(
             status="failed",
             mode=mode,
             code=code,
@@ -126,7 +151,11 @@ def run_pipeline(input_payload: dict[str, Any], mode: str) -> dict[str, Any]:
             stage=exc.stage,
             correlation_id=correlation_id,
         )
+        if correlation_id:
+            failure["metrics"] = collect_run_metrics(trace_id)
+        return failure
     except Exception as exc:
+        record_failure_category(correlation_id=trace_id, category="provider")
         log_failure_event(
             correlation_id=trace_id,
             stage="dispatch",
@@ -135,7 +164,7 @@ def run_pipeline(input_payload: dict[str, Any], mode: str) -> dict[str, Any]:
             failure_category="provider",
             metadata={"message": str(exc)},
         )
-        return build_failure(
+        failure = build_failure(
             status="failed",
             mode=mode,
             code="PIPELINE_ERROR",
@@ -145,3 +174,6 @@ def run_pipeline(input_payload: dict[str, Any], mode: str) -> dict[str, Any]:
             stage="dispatch",
             correlation_id=correlation_id,
         )
+        if correlation_id:
+            failure["metrics"] = collect_run_metrics(trace_id)
+        return failure
