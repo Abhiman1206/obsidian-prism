@@ -31,7 +31,9 @@ def test_provider_exception_maps_to_provider_failure_category(monkeypatch) -> No
     result = service.run_pipeline(_payload("corr-provider"), "crewai")
 
     assert result["status"] == "failed"
+    assert result["error"]["code"] == "PIPELINE_ERROR"
     assert result["error"]["failure_category"] == "provider"
+    assert result["error"]["stage"] == "dispatch"
     assert isinstance(result["error"]["retry_count"], int)
 
 
@@ -53,7 +55,9 @@ def test_timeout_maps_to_timeout_failure_category(monkeypatch) -> None:
     result = service.run_pipeline(_payload("corr-timeout"), "crewai")
 
     assert result["status"] == "failed"
+    assert result["error"]["code"] == "TIMEOUT"
     assert result["error"]["failure_category"] == "timeout"
+    assert result["error"]["stage"] == "dispatch"
 
 
 def test_rate_limit_maps_to_rate_limit_failure_category(monkeypatch) -> None:
@@ -63,5 +67,7 @@ def test_rate_limit_maps_to_rate_limit_failure_category(monkeypatch) -> None:
     result = service.run_pipeline(_payload("corr-rate"), "langgraph")
 
     assert result["status"] == "failed"
+    assert result["error"]["code"] == "RATE_LIMIT"
     assert result["error"]["failure_category"] == "rate_limit"
     assert result["error"]["retry_count"] == 0
+    assert result["error"]["stage"] == "dispatch"
