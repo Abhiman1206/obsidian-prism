@@ -113,8 +113,10 @@ Success criteria:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md - Harden deterministic unhappy-path unit contracts and metadata parity
-- [ ] 04-02-PLAN.md - Build integration parity matrix and unattended diagnostics suite
+- [x] 04-01-PLAN.md - Harden deterministic unhappy-path unit contracts and metadata parity
+- [x] 04-02-PLAN.md - Build integration parity matrix and unattended diagnostics suite
+
+Status: Complete (2026-03-31)
 
 **UI hint**: no
 
@@ -134,4 +136,4 @@ Success criteria:
 **UI hint**: no
 
 ---
-*Last updated: 2026-03-31 after phase 4 planning*
+*Last updated: 2026-03-31 after phase 4 execution*

@@ -67,13 +67,13 @@
 | RELI-01 | Phase 3 | Pending |
 | RELI-02 | Phase 3 | Pending |
 | RELI-03 | Phase 3 | Pending |
-| RELI-04 | Phase 4 | Pending |
+| RELI-04 | Phase 4 | Complete |
 | OPER-01 | Phase 3 | Pending |
 | OPER-02 | Phase 3 | Pending |
 | OPER-03 | Phase 3 | Pending |
 | OPER-04 | Phase 3 | Pending |
-| QUAL-01 | Phase 4 | Pending |
-| QUAL-02 | Phase 4 | Pending |
+| QUAL-01 | Phase 4 | Complete |
+| QUAL-02 | Phase 4 | Complete |
 | QUAL-03 | Phase 5 | Pending |
 | QUAL-04 | Phase 5 | Pending |
 
