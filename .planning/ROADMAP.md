@@ -55,6 +55,12 @@ Success criteria:
 3. Framework-specific code remains isolated from API-level contracts.
 4. Sample inputs from chapter run successfully in both modes.
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md - Normalize adapter outputs through shared contract helpers
+- [ ] 02-02-PLAN.md - Enforce single-input dual-mode service parity and sample matrix coverage
+
 **UI hint**: no
 
 ## Phase 3: Production Runtime and Ops
@@ -111,4 +117,4 @@ Success criteria:
 **UI hint**: no
 
 ---
-*Last updated: 2026-03-27 after phase 1 execution*
+*Last updated: 2026-03-31 after phase 2 planning*
