@@ -21,11 +21,16 @@ def run_pipeline(input_payload: dict[str, Any], mode: str) -> dict[str, Any]:
 
     try:
         load_settings()
-        PipelineInput.from_dict({**input_payload, "mode": mode})
+        normalized_input = PipelineInput.from_dict({**input_payload, "mode": mode})
+        normalized_payload = {
+            "applicant_id": normalized_input.applicant_id,
+            "document_id": normalized_input.document_id,
+            "mode": normalized_input.mode,
+        }
 
         if mode == "crewai":
-            return run_crewai_pipeline(input_payload)
-        return run_langgraph_pipeline(input_payload)
+            return run_crewai_pipeline(normalized_payload)
+        return run_langgraph_pipeline(normalized_payload)
     except Exception as exc:
         return build_failure(
             status="failed",
