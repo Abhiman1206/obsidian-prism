@@ -85,6 +85,13 @@ Success criteria:
 4. Structured logs include correlation IDs and stage telemetry.
 5. Metrics for duration, retries, and failures are emitted per run.
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md - Add runtime guardrails and mission-report failure envelope
+- [ ] 03-02-PLAN.md - Implement operational endpoints and structured redacted logging
+- [ ] 03-03-PLAN.md - Add metrics instrumentation and observability integration checks
+
 **UI hint**: no
 
 ## Phase 4: Deterministic Validation
@@ -119,4 +126,4 @@ Success criteria:
 **UI hint**: no
 
 ---
-*Last updated: 2026-03-31 after phase 2 execution*
+*Last updated: 2026-03-31 after phase 3 planning*
