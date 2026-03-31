@@ -21,5 +21,11 @@ def build_adapter_failure(mode: str, code: str, message: str) -> dict[str, Any]:
         decision="error",
         mode=mode,
         stages={"document": {"status": "failed", "provider": "mock"}},
-        error={"code": code, "message": message},
+        error={
+            "code": code,
+            "message": message,
+            "failure_category": "invalid_document",
+            "retry_count": 0,
+            "stage": "document",
+        },
     ).to_dict()

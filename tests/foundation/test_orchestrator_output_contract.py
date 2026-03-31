@@ -35,5 +35,11 @@ def test_unknown_document_returns_normalized_failure_for_both_adapters() -> None
     assert lang["status"] == "failed"
     assert crew["error"]["code"] == "DOCUMENT_ERROR"
     assert lang["error"]["code"] == "DOCUMENT_ERROR"
+    assert crew["error"]["failure_category"] == "invalid_document"
+    assert lang["error"]["failure_category"] == "invalid_document"
+    assert crew["error"]["retry_count"] == 0
+    assert lang["error"]["retry_count"] == 0
+    assert crew["error"]["stage"] == "document"
+    assert lang["error"]["stage"] == "document"
     assert crew["mode"] == "crewai"
     assert lang["mode"] == "langgraph"
