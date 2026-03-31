@@ -24,3 +24,27 @@ langgraph_result = run_pipeline(payload, "langgraph")
 
 Both calls return the same normalized response schema and deterministic decision
 behavior for the same document scenario.
+
+## Reproducible Setup
+
+Create a virtual environment and install pinned dependencies:
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements-dev.txt
+```
+
+## Quality Gates (CI Parity)
+
+Run the same checks used by pull-request CI:
+
+```bash
+python -m ruff check src tests
+python -m mypy src/loan_agents
+python -m pytest -q
+```
+
+All commands are non-interactive and deterministic when installed from
+`requirements-dev.txt`.
