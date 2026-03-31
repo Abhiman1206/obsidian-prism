@@ -28,3 +28,25 @@ def test_run_pipeline_returns_failure_when_config_missing(monkeypatch) -> None:
     assert result["status"] == "failed"
     assert result["mode"] == "langgraph"
     assert result["error"]["code"] == "PIPELINE_ERROR"
+
+
+def test_run_pipeline_dispatches_normalized_payload_to_adapter(monkeypatch) -> None:
+    monkeypatch.setenv("LLM_API_KEY", "key")
+    captured: dict[str, str] = {}
+
+    def fake_crewai(payload):
+        captured.update(payload)
+        return {
+            "status": "success",
+            "decision": "approve",
+            "mode": "crewai",
+            "stages": {"document": {"status": "processed", "provider": "mock"}},
+            "error": None,
+        }
+
+    monkeypatch.setattr("loan_agents.runtime.service.run_crewai_pipeline", fake_crewai)
+
+    result = run_pipeline({"applicant_id": 101, "document_id": 202}, "crewai")
+
+    assert result["status"] == "success"
+    assert captured == {"applicant_id": "101", "document_id": "202", "mode": "crewai"}
