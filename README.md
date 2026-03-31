@@ -48,3 +48,23 @@ python -m pytest -q
 
 All commands are non-interactive and deterministic when installed from
 `requirements-dev.txt`.
+
+## Container Runtime
+
+Build and run the runtime service locally:
+
+```bash
+docker build -t loan-agents:local .
+docker run --rm -p 8000:8000 -e LLM_API_KEY=test-key loan-agents:local
+```
+
+Smoke-check endpoints:
+
+```bash
+curl http://localhost:8000/health
+curl http://localhost:8000/readiness
+curl -X POST http://localhost:8000/run -H "Content-Type: application/json" -d '{"applicant_id":"app_100","document_id":"document_valid_123","mode":"crewai"}'
+```
+
+For release preflight, smoke, and rollback steps, see
+`.planning/phases/05-release-hardening/05-RELEASE-CHECKLIST.md`.
