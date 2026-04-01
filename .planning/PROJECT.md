@@ -17,16 +17,19 @@ Deliver reliable and auditable loan-origination agent decisions with determinist
 - [x] Fail-fast configuration validation validated in Phase 1
 - [x] Single service input contract now executes both CrewAI and LangGraph modes (validated in Phase 2)
 - [x] Shared normalized output contract is enforced across both orchestration adapters (validated in Phase 2)
+- [x] Frontend run flow calls backend runtime endpoints and handles loading, success, and structured failure states (validated in Phase 7)
+- [x] Backend runtime supports safe cross-origin integration using environment-configured allowed origins (validated in Phase 7)
+- [x] Frontend and backend deployment contracts are defined for Vercel and Render with runbook-backed verification (validated in Phase 8)
 
 ### Active
 
 - [ ] Add production guardrails: retry/rate-limit controls, and structured error reports.
 - [ ] Add broader automated tests, CI checks, and deployment-ready run paths.
+- [ ] Build the web frontend for the loan application workflow.
 
 ### Out of Scope
 
 - Full real bureau/vendor integrations in v1 - this phase focuses on production hardening of current mock-driven logic.
-- Building a frontend UI - current scope is backend workflow and operational readiness.
 
 ## Context
 
@@ -65,4 +68,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-31 after phase 2 completion*
+*Last updated: 2026-04-01 after phase 8 completion*

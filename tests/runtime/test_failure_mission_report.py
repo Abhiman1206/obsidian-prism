@@ -27,6 +27,7 @@ def test_invalid_mode_returns_mission_report_fields() -> None:
 
 def test_provider_exception_maps_to_provider_failure_category(monkeypatch) -> None:
     monkeypatch.setenv("LLM_API_KEY", "key")
+    monkeypatch.setenv("MAX_RETRIES", "0")
 
     def boom(payload):
         raise RuntimeError("provider down")
@@ -43,6 +44,7 @@ def test_provider_exception_maps_to_provider_failure_category(monkeypatch) -> No
 
 def test_timeout_maps_to_timeout_failure_category(monkeypatch) -> None:
     monkeypatch.setenv("LLM_API_KEY", "key")
+    monkeypatch.setenv("MAX_RETRIES", "0")
     monkeypatch.setenv("RUN_TIMEOUT_SECONDS", "0.01")
 
     def slow_call(payload):

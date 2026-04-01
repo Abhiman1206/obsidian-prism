@@ -46,6 +46,21 @@
 - **ADV-02**: Human-in-the-loop approval checkpoints for configurable policy thresholds.
 - **ADV-03**: Persistent run history with replay and audit dashboard.
 
+### Frontend Experience
+
+- [x] **FE-01**: Web frontend provides applicant data entry, execution progress, and decision summary views.
+- [x] **FE-02**: Frontend enforces typed client-side validation aligned with backend input contracts.
+
+### Frontend and Backend Integration
+
+- [x] **INT-01**: Frontend run flow calls backend runtime endpoints and handles loading, success, and structured failure states.
+- [x] **INT-02**: Backend runtime supports safe cross-origin integration using environment-configured allowed origins.
+
+### Deployment
+
+- [x] **DEP-01**: Frontend is deployable to Vercel with environment-based backend URL configuration.
+- [x] **DEP-02**: Backend is deployable to Render with health/readiness checks and required environment variables.
+
 ## Out of Scope
 
 | Feature | Reason |
@@ -76,12 +91,21 @@
 | QUAL-02 | Phase 4 | Complete |
 | QUAL-03 | Phase 5 | Complete |
 | QUAL-04 | Phase 5 | Complete |
+| FE-01 | Phase 6 | Complete |
+| FE-02 | Phase 6 | Complete |
+| INT-01 | Phase 7 | Complete |
+| INT-02 | Phase 7 | Complete |
+| DEP-01 | Phase 8 | Complete |
+| DEP-02 | Phase 8 | Complete |
 
 **Coverage:**
 - v1 requirements: 18 total
 - Mapped to phases: 18
 - Unmapped: 0
+- v2 requirements (frontend/deployment): 6 total
+- Mapped to phases: 6
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-27*
-*Last updated: 2026-03-31 after phase 5 completion*
+*Last updated: 2026-04-01 after phase 8 completion*

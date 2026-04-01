@@ -2,8 +2,8 @@
 
 **Created:** 2026-03-27
 **Granularity:** Standard
-**Total v1 requirements:** 18
-**Mapped requirements:** 18
+**Total tracked requirements:** 24 (v1: 18, v2: 6)
+**Mapped requirements:** 24
 **Coverage:** 100%
 
 ## Phase Summary
@@ -15,6 +15,9 @@
 | 3 | Production Runtime and Ops | Add API/runtime safeguards, observability, and operational endpoints | RELI-01, RELI-02, RELI-03, OPER-01, OPER-02, OPER-03, OPER-04, SECU-03 | 5 |
 | 4 | Deterministic Validation | Verify deterministic behavior for happy and unhappy paths across orchestrators | RELI-04, QUAL-01, QUAL-02 | 4 |
 | 5 | Release Hardening | Enforce CI quality gates and package deployment artifacts | QUAL-03, QUAL-04 | 4 |
+| 6 | Frontend Application | Build the web frontend for loan intake, execution progress, and result display | FE-01, FE-02 | 4 |
+| 7 | Frontend/Backend Integration | Connect frontend workflows to runtime API with cross-origin safety | INT-01, INT-02 | 4 |
+| 8 | Platform Deployment | Deploy frontend on Vercel and backend on Render with operational checks | DEP-01, DEP-02 | 4 |
 
 ## Phase Details
 
@@ -143,5 +146,71 @@ Status: Complete (2026-03-31)
 
 **UI hint**: no
 
+## Phase 6: Frontend Application
+Goal: Build a production-ready frontend application for loan workflow inputs and normalized decision presentation.
+
+Requirements:
+- FE-01
+- FE-02
+
+Success criteria:
+1. A dedicated frontend app can collect applicant/document inputs required by backend contracts.
+2. Frontend validates required fields and user-facing constraints before submission.
+3. UI shows clear loading/progress, success output, and structured failure messages.
+4. Frontend build/test/lint commands are documented and run in CI-ready form.
+
+**Plans:** 1 plan
+
+Plans:
+- [x] 06-01-PLAN.md - Create frontend app shell, validated input flow, and result visualization baseline
+
+Status: Complete (2026-03-31)
+
+**UI hint**: yes
+
+## Phase 7: Frontend/Backend Integration
+Goal: Connect frontend workflows to backend runtime endpoints for end-to-end execution.
+
+Requirements:
+- INT-01
+- INT-02
+
+Success criteria:
+1. Frontend submits typed payloads to backend `/run` and renders normalized response contracts.
+2. Backend CORS and environment settings support deployed frontend origins safely.
+3. Integration tests cover success and structured failure scenarios across the boundary.
+4. Local and staging smoke checks verify the connected flow end to end.
+
+**Plans:** 1 plan
+
+Plans:
+- [x] 07-01-PLAN.md - Implement API client integration, CORS-safe backend config, and end-to-end smoke coverage
+
+Status: Complete (2026-03-31)
+
+**UI hint**: yes
+
+## Phase 8: Platform Deployment
+Goal: Deploy frontend to Vercel and backend to Render with documented operations and rollback.
+
+Requirements:
+- DEP-01
+- DEP-02
+
+Success criteria:
+1. Frontend is deployed on Vercel with environment-managed backend endpoint configuration.
+2. Backend is deployed on Render with health/readiness checks and required secret settings.
+3. Deployment runbook includes preflight, smoke, observability checks, and rollback steps.
+4. Release checklist captures post-deploy verification for both services.
+
+**Plans:** 1 plan
+
+Plans:
+- [x] 08-01-PLAN.md - Configure Vercel and Render deployment pipelines with runbook-backed verification
+
+Status: Complete (2026-04-01)
+
+**UI hint**: yes
+
 ---
-*Last updated: 2026-03-31 after phase 5 execution*
+*Last updated: 2026-04-01 after phase 8 completion*

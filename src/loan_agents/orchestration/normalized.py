@@ -15,17 +15,26 @@ def build_success_result(mode: str, decision: str, stages: dict[str, Any]) -> di
     ).to_dict()
 
 
-def build_adapter_failure(mode: str, code: str, message: str) -> dict[str, Any]:
+def build_adapter_failure(
+    mode: str,
+    code: str,
+    message: str,
+    *,
+    failure_category: str = "invalid_document",
+    retry_count: int = 0,
+    stage: str = "document",
+    stages: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     return PipelineResult(
         status="failed",
         decision="error",
         mode=mode,
-        stages={"document": {"status": "failed", "provider": "mock"}},
+        stages=stages or {"document": {"status": "failed", "provider": "mock"}},
         error={
             "code": code,
             "message": message,
-            "failure_category": "invalid_document",
-            "retry_count": 0,
-            "stage": "document",
+            "failure_category": failure_category,
+            "retry_count": retry_count,
+            "stage": stage,
         },
     ).to_dict()

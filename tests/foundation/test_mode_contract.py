@@ -35,6 +35,7 @@ def test_dispatch_calls_adapter_matching_mode(monkeypatch) -> None:
 
 def test_adapter_failures_return_structured_failure_with_selected_mode(monkeypatch) -> None:
     monkeypatch.setenv("LLM_API_KEY", "key")
+    monkeypatch.setenv("MAX_RETRIES", "0")
 
     def boom(payload):
         raise RuntimeError("provider down")

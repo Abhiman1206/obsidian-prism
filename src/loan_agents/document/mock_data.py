@@ -1,9 +1,32 @@
 """Canonical mock document provider for deterministic test scenarios."""
 
+import json
+
+
 SCENARIOS: dict[str, str] = {
-    "document_valid_123": """Applicant name: Jane Doe\nIncome: 96000\nRequested loan: 250000\nEmployment: Full-time""",
-    "document_risky_789": """Applicant name: John Smith\nIncome: 43000\nRequested loan: 320000\nEmployment: Contract""",
-    "document_invalid_456": """Applicant name: Missing\nIncome: N/A\nRequested loan: unknown\nEmployment: unknown""",
+    "document_valid_123": json.dumps(
+        {
+            "customer_id": "CUST-12345",
+            "loan_amount": 50000,
+            "income": "USD 120000 a year",
+            "credit_history": "7 years good standing",
+        }
+    ),
+    "document_risky_789": json.dumps(
+        {
+            "customer_id": "CUST-99999",
+            "loan_amount": 50000,
+            "income": "USD 40000 a year",
+            "credit_history": "Recent Missed Payments",
+        }
+    ),
+    "document_invalid_456": json.dumps(
+        {
+            "customer_id": "CUST-55555",
+            "loan_amount": 200000,
+            "credit_history": "1 year",
+        }
+    ),
 }
 
 

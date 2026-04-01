@@ -95,6 +95,36 @@ def run_pipeline(input_payload: dict[str, Any], mode: str) -> dict[str, Any]:
             record_retry(correlation_id=trace_id)
 
         result = outcome.value
+        if isinstance(result, dict):
+            stages = result.get("stages", {})
+            if isinstance(stages, dict):
+                for stage_name, stage_payload in stages.items():
+                    if not isinstance(stage_payload, dict):
+                        continue
+                    duration_ms = max(0, int(stage_payload.get("duration_ms", 0)))
+                    status = str(stage_payload.get("status", "unknown"))
+                    record_stage_duration(correlation_id=trace_id, stage=str(stage_name), duration_ms=duration_ms)
+                    log_stage_event(
+                        correlation_id=trace_id,
+                        stage=str(stage_name),
+                        mode=mode,
+                        status=status,
+                        duration_ms=duration_ms,
+                    )
+
+            if result.get("status") == "failed" and isinstance(result.get("error"), dict):
+                failure_error = result["error"]
+                failure_category = str(failure_error.get("failure_category", "provider"))
+                record_failure_category(correlation_id=trace_id, category=failure_category)
+                log_failure_event(
+                    correlation_id=trace_id,
+                    stage=str(failure_error.get("stage", "dispatch")),
+                    mode=mode,
+                    duration_ms=0,
+                    failure_category=failure_category,
+                    metadata={"message": str(failure_error.get("message", "pipeline failure"))},
+                )
+
         if correlation_id:
             result["metrics"] = collect_run_metrics(trace_id)
         return result
