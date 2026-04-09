@@ -103,9 +103,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 06-01: Build responsive risk dashboard views with ranking and KPI summaries.
-- [ ] 06-02: Build executive report pages with drill-down evidence linking.
-- [ ] 06-03: Complete accessibility and responsive QA polish across critical screens.
+- [ ] 06-01-PLAN.md — Build responsive risk dashboard views with ranking and KPI summaries.
+- [ ] 06-02-PLAN.md — Build executive report pages with drill-down evidence linking.
+- [ ] 06-03-PLAN.md — Complete accessibility and responsive QA polish across critical screens.
 
 ### Phase 7: Reliability Hardening and Render Deployment
 **Goal**: Ensure resilient operations and deploy production-ready containerized services on Render.
