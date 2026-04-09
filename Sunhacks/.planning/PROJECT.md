@@ -21,10 +21,11 @@ Translate engineering risk into financially actionable decisions for executives 
 - [x] Deterministic 90-day risk features are generated per component from health and ingestion signals (Phase 4).
 - [x] Risk forecasts include bounded probability, confidence, and ranked typed contributor signals (Phase 4).
 - [x] Ranked risk forecasts are persisted and retrievable by run through stable API contracts (Phase 4).
+- [x] Technical risk is translated into deterministic business cost-of-inaction outputs with configurable assumptions (Phase 5).
+- [x] Executive reports now include plain-language summaries, prioritized actions, and run-scoped retrieval with claim lineage references (Phase 5).
 
 ### Active
 
-- [ ] Quantify business cost of inaction and generate CEO-safe narrative reports.
 - [ ] Provide responsive web UI for risk dashboards and executive reporting.
 - [ ] Run production backend on FastAPI in Docker and deploy on Render.
 
@@ -86,4 +87,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-10 after Phase 4 completion*
+*Last updated: 2026-04-10 after Phase 5 completion*
