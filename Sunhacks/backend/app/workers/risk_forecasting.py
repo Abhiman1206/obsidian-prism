@@ -3,10 +3,15 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from app.domain.risk.forecasting import forecast_component_risk
+from app.domain.risk.repository import RISK_FORECAST_REPOSITORY
 
 
 def _utc_timestamp() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def persist_risk_forecasts(records: list[dict]) -> None:
+    RISK_FORECAST_REPOSITORY.add_many(records)
 
 
 def run_risk_forecasting(run_id: str, repository_id: str, feature_rows: list[dict]) -> list[dict]:
