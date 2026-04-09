@@ -2,11 +2,16 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
+from app.domain.health.repository import HEALTH_SCORE_REPOSITORY
 from app.domain.health.scoring import score_component
 
 
 def _utc_timestamp() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def persist_health_scores(records: list[dict]) -> None:
+    HEALTH_SCORE_REPOSITORY.add_many(records)
 
 
 def run_health_scoring(
