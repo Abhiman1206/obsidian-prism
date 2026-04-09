@@ -18,10 +18,12 @@ Translate engineering risk into financially actionable decisions for executives 
 - [x] Ingestion evidence lineage is persisted and queryable by run (Phase 2).
 - [x] Deterministic module health scoring computes explainable weighted factors from maintainability/complexity/volatility (Phase 3).
 - [x] Health score results are persisted per run and exposed via API with factor-level explainability payloads (Phase 3).
+- [x] Deterministic 90-day risk features are generated per component from health and ingestion signals (Phase 4).
+- [x] Risk forecasts include bounded probability, confidence, and ranked typed contributor signals (Phase 4).
+- [x] Ranked risk forecasts are persisted and retrievable by run through stable API contracts (Phase 4).
 
 ### Active
 
-- [ ] Predict 90-day failure likelihood per component using weighted risk modeling.
 - [ ] Quantify business cost of inaction and generate CEO-safe narrative reports.
 - [ ] Provide responsive web UI for risk dashboards and executive reporting.
 - [ ] Run production backend on FastAPI in Docker and deploy on Render.
@@ -63,6 +65,8 @@ Translate engineering risk into financially actionable decisions for executives 
 | Persist lineage records at ingestion time | Preserve deterministic claim-to-source traceability for auditability | Applied in Phase 2 |
 | Use fixed health factor weights and clamped normalization | Keep score behavior deterministic and explainable for executive-facing reporting | Applied in Phase 3 |
 | Persist health scores behind repository boundary with run-scoped API reads | Keep write/read responsibilities explicit and stable for downstream risk/report consumers | Applied in Phase 3 |
+| Use deterministic risk pressure and forecast contributor weighting | Ensure risk outputs remain reproducible, explainable, and contract-safe | Applied in Phase 4 |
+| Expose risk forecasts via run-scoped ranked repository reads | Keep API behavior stable with deterministic ordering and empty-run semantics | Applied in Phase 4 |
 
 ## Evolution
 
@@ -82,4 +86,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-10 after Phase 3 completion*
+*Last updated: 2026-04-10 after Phase 4 completion*

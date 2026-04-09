@@ -8,8 +8,8 @@ This roadmap builds a production-ready predictive engineering intelligence produ
 
 - [x] **Phase 1: Platform Foundation and Contracts** - Establish FastAPI/Next.js project skeleton, domain contracts, and orchestration baseline.
 - [x] **Phase 2: Repository Ingestion and Evidence Graph** - Implement GitHub/GitLab/PyDriller ingestion with canonical storage and lineage.
-- [ ] **Phase 3: Code Health Scoring Engine** - Build Radon-driven scoring pipeline and explainable component health outputs.
-- [ ] **Phase 4: 90-Day Predictive Risk Forecasting** - Implement risk model, confidence scoring, and ranked risk outputs.
+- [x] **Phase 3: Code Health Scoring Engine** - Build Radon-driven scoring pipeline and explainable component health outputs.
+- [x] **Phase 4: 90-Day Predictive Risk Forecasting** - Implement risk model, confidence scoring, and ranked risk outputs.
 - [ ] **Phase 5: Business Impact Synthesis** - Translate technical risk into executive-friendly cost-of-inaction reporting.
 - [ ] **Phase 6: Responsive Next.js Dashboard and Reporting UX** - Deliver mobile/desktop dashboards and report drill-down views.
 - [ ] **Phase 7: Reliability Hardening and Render Deployment** - Add robustness, observability, Docker productionization, and Render rollout.
@@ -73,9 +73,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Implement risk feature pipeline combining health, churn, and historical defect proxies.
-- [ ] 04-02-PLAN.md — Implement deterministic forecasting model, confidence estimation, and contributor signals.
-- [ ] 04-03-PLAN.md — Expose ranked risk forecast APIs with run-scoped retrieval and contributor details.
+- [x] 04-01-PLAN.md — Implement risk feature pipeline combining health, churn, and historical defect proxies.
+- [x] 04-02-PLAN.md — Implement deterministic forecasting model, confidence estimation, and contributor signals.
+- [x] 04-03-PLAN.md — Expose ranked risk forecast APIs with run-scoped retrieval and contributor details.
 
 ### Phase 5: Business Impact Synthesis
 **Goal**: Convert predictive technical outputs into executive-ready financial decision support.
@@ -129,8 +129,8 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation and Contracts | 3/3 | Complete | 2026-04-09 |
 | 2. Repository Ingestion and Evidence Graph | 4/4 | Complete | 2026-04-10 |
-| 3. Code Health Scoring Engine | 0/3 | Not started | - |
-| 4. 90-Day Predictive Risk Forecasting | 0/3 | Not started | - |
+| 3. Code Health Scoring Engine | 3/3 | Complete | 2026-04-10 |
+| 4. 90-Day Predictive Risk Forecasting | 3/3 | Complete | 2026-04-10 |
 | 5. Business Impact Synthesis | 0/3 | Not started | - |
 | 6. Responsive Next.js Dashboard and Reporting UX | 0/3 | Not started | - |
 | 7. Reliability Hardening and Render Deployment | 0/4 | Not started | - |
