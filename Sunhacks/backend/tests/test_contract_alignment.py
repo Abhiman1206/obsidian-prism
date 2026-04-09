@@ -65,3 +65,17 @@ def test_frontend_contracts_include_core_backend_fields() -> None:
 
     for field in ExecutiveReportSummary.model_fields.keys():
         assert field in source
+
+
+def test_executive_report_contract_includes_section_fields() -> None:
+    source = _frontend_contracts_source()
+
+    expected_section_fields = {
+        "top_risks",
+        "cost_of_inaction",
+        "recommended_priorities",
+    }
+    assert expected_section_fields.issubset(set(ExecutiveReportSummary.model_fields.keys()))
+
+    for field in expected_section_fields:
+        assert field in source
