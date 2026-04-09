@@ -42,7 +42,7 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Implement provider auth/config and repository registration APIs.
+- [x] 02-01-PLAN.md — Implement provider auth/config and repository registration APIs.
 - [ ] 02-02-PLAN.md — Build GitHub/GitLab ingestion adapters with pagination and normalization.
 - [ ] 02-03-PLAN.md — Build PyDriller incremental miner and persistence flows.
 - [ ] 02-04-PLAN.md — Implement evidence graph schema and lineage writer for ingestion stage.

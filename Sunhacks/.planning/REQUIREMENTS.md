@@ -7,8 +7,8 @@
 
 ### Repository Ingestion
 
-- [ ] **INGEST-01**: User can connect a GitHub repository and authorize analysis scopes.
-- [ ] **INGEST-02**: User can connect a GitLab repository and authorize analysis scopes.
+- [x] **INGEST-01**: User can connect a GitHub repository and authorize analysis scopes.
+- [x] **INGEST-02**: User can connect a GitLab repository and authorize analysis scopes.
 - [ ] **INGEST-03**: System can ingest commit history, changed files, and contributor churn for selected repositories.
 - [ ] **INGEST-04**: System can capture issue/deployment cadence signals from provider APIs when available.
 - [ ] **INGEST-05**: Ingestion jobs can resume incrementally without reprocessing full history.
@@ -74,8 +74,8 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INGEST-01 | Phase 2 | Pending |
-| INGEST-02 | Phase 2 | Pending |
+| INGEST-01 | Phase 2 | Complete |
+| INGEST-02 | Phase 2 | Complete |
 | INGEST-03 | Phase 2 | Pending |
 | INGEST-04 | Phase 2 | Pending |
 | INGEST-05 | Phase 2 | Pending |
