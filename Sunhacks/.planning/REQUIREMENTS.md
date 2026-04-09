@@ -33,7 +33,7 @@
 
 ### Auditability and Reliability
 
-- [ ] **AUDIT-01**: Every report claim can be traced to source metrics and data lineage records.
+- [x] **AUDIT-01**: Every report claim can be traced to source metrics and data lineage records.
 - [ ] **AUDIT-02**: External API/tool calls are guarded by timeout and adaptive retry policies.
 - [ ] **AUDIT-03**: Pipeline can fail gracefully at task level without freezing entire run.
 
@@ -88,7 +88,7 @@
 | BIZ-01 | Phase 5 | Pending |
 | BIZ-02 | Phase 5 | Pending |
 | BIZ-03 | Phase 5 | Pending |
-| AUDIT-01 | Phase 2 | Pending |
+| AUDIT-01 | Phase 2 | Complete |
 | AUDIT-02 | Phase 7 | Pending |
 | AUDIT-03 | Phase 7 | Pending |
 | UI-01 | Phase 6 | Pending |

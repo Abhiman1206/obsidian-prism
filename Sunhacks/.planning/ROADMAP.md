@@ -45,7 +45,7 @@ Plans:
 - [x] 02-01-PLAN.md — Implement provider auth/config and repository registration APIs.
 - [x] 02-02-PLAN.md — Build GitHub/GitLab ingestion adapters with pagination and normalization.
 - [x] 02-03-PLAN.md — Build PyDriller incremental miner and persistence flows.
-- [ ] 02-04-PLAN.md — Implement evidence graph schema and lineage writer for ingestion stage.
+- [x] 02-04-PLAN.md — Implement evidence graph schema and lineage writer for ingestion stage.
 
 ### Phase 3: Code Health Scoring Engine
 **Goal**: Compute explainable component health scores from source analysis and change dynamics.
