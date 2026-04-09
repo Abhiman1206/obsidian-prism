@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ReactNode } from "react";
+import React from "react";
 
 type AppShellProps = {
   children: ReactNode;
