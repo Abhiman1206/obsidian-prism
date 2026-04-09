@@ -27,7 +27,7 @@ This roadmap builds a production-ready predictive engineering intelligence produ
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold FastAPI service structure with schema contracts and health endpoints.
+- [x] 01-01-PLAN.md — Scaffold FastAPI service structure with schema contracts and health endpoints.
 - [ ] 01-02-PLAN.md — Scaffold Next.js responsive shell with routing and base design system.
 - [ ] 01-03-PLAN.md — Define shared domain models and orchestration interfaces.
 
