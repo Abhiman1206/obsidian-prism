@@ -40,8 +40,8 @@
 ### Frontend Experience (Next.js)
 
 - [x] **UI-01**: User can view repository risk dashboard with ranked components and key metrics.
-- [ ] **UI-02**: User can view and navigate executive report sections with evidence drill-down links.
-- [ ] **UI-03**: Dashboard and report pages are responsive and usable on mobile and desktop.
+- [x] **UI-02**: User can view and navigate executive report sections with evidence drill-down links.
+- [x] **UI-03**: Dashboard and report pages are responsive and usable on mobile and desktop.
 
 ### Backend and Deployment (FastAPI + Docker + Render)
 
@@ -92,8 +92,8 @@
 | AUDIT-02 | Phase 7 | Pending |
 | AUDIT-03 | Phase 7 | Pending |
 | UI-01 | Phase 6 | Complete |
-| UI-02 | Phase 6 | Pending |
-| UI-03 | Phase 6 | Pending |
+| UI-02 | Phase 6 | Complete |
+| UI-03 | Phase 6 | Complete |
 | PLAT-01 | Phase 1 | Complete |
 | PLAT-02 | Phase 7 | Pending |
 | PLAT-03 | Phase 7 | Pending |

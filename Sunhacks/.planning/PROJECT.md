@@ -23,10 +23,10 @@ Translate engineering risk into financially actionable decisions for executives 
 - [x] Ranked risk forecasts are persisted and retrievable by run through stable API contracts (Phase 4).
 - [x] Technical risk is translated into deterministic business cost-of-inaction outputs with configurable assumptions (Phase 5).
 - [x] Executive reports now include plain-language summaries, prioritized actions, and run-scoped retrieval with claim lineage references (Phase 5).
+- [x] Responsive dashboard and executive report workflows now support mobile/desktop usability with claim-level drill-down (Phase 6).
 
 ### Active
 
-- [ ] Provide responsive web UI for risk dashboards and executive reporting.
 - [ ] Run production backend on FastAPI in Docker and deploy on Render.
 
 ### Out of Scope
@@ -87,4 +87,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-10 after Phase 5 completion*
+*Last updated: 2026-04-10 after Phase 6 completion*

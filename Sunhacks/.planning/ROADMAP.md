@@ -11,7 +11,7 @@ This roadmap builds a production-ready predictive engineering intelligence produ
 - [x] **Phase 3: Code Health Scoring Engine** - Build Radon-driven scoring pipeline and explainable component health outputs.
 - [x] **Phase 4: 90-Day Predictive Risk Forecasting** - Implement risk model, confidence scoring, and ranked risk outputs.
 - [ ] **Phase 5: Business Impact Synthesis** - Translate technical risk into executive-friendly cost-of-inaction reporting.
-- [ ] **Phase 6: Responsive Next.js Dashboard and Reporting UX** - Deliver mobile/desktop dashboards and report drill-down views.
+- [x] **Phase 6: Responsive Next.js Dashboard and Reporting UX** - Deliver mobile/desktop dashboards and report drill-down views.
 - [ ] **Phase 7: Reliability Hardening and Render Deployment** - Add robustness, observability, Docker productionization, and Render rollout.
 
 ## Phase Details
@@ -104,8 +104,8 @@ Plans:
 
 Plans:
 - [x] 06-01-PLAN.md — Build responsive risk dashboard views with ranking and KPI summaries.
-- [ ] 06-02-PLAN.md — Build executive report pages with drill-down evidence linking.
-- [ ] 06-03-PLAN.md — Complete accessibility and responsive QA polish across critical screens.
+- [x] 06-02-PLAN.md — Build executive report pages with drill-down evidence linking.
+- [x] 06-03-PLAN.md — Complete accessibility and responsive QA polish across critical screens.
 
 ### Phase 7: Reliability Hardening and Render Deployment
 **Goal**: Ensure resilient operations and deploy production-ready containerized services on Render.
@@ -132,5 +132,5 @@ Plans:
 | 3. Code Health Scoring Engine | 3/3 | Complete | 2026-04-10 |
 | 4. 90-Day Predictive Risk Forecasting | 3/3 | Complete | 2026-04-10 |
 | 5. Business Impact Synthesis | 0/3 | Not started | - |
-| 6. Responsive Next.js Dashboard and Reporting UX | 0/3 | Not started | - |
+| 6. Responsive Next.js Dashboard and Reporting UX | 3/3 | Complete | 2026-04-10 |
 | 7. Reliability Hardening and Render Deployment | 0/4 | Not started | - |
