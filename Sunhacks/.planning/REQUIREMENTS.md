@@ -28,7 +28,7 @@
 ### Business Impact Translation
 
 - [x] **BIZ-01**: System translates technical risk outputs into estimated time-cost impact using configurable assumptions.
-- [ ] **BIZ-02**: System generates an executive report in non-technical language.
+- [x] **BIZ-02**: System generates an executive report in non-technical language.
 - [ ] **BIZ-03**: Report highlights cost of inaction and prioritization recommendations.
 
 ### Auditability and Reliability
@@ -86,7 +86,7 @@
 | RISK-02 | Phase 4 | Pending |
 | RISK-03 | Phase 4 | Pending |
 | BIZ-01 | Phase 5 | Complete |
-| BIZ-02 | Phase 5 | Pending |
+| BIZ-02 | Phase 5 | Complete |
 | BIZ-03 | Phase 5 | Pending |
 | AUDIT-01 | Phase 2 | Complete |
 | AUDIT-02 | Phase 7 | Pending |
