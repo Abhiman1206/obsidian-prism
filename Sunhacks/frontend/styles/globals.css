@@ -27,7 +27,8 @@ body {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   display: flex;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
   align-items: center;
   justify-content: space-between;
   padding: 0.875rem 1rem;
@@ -41,6 +42,7 @@ body {
 
 .app-shell__nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.875rem;
   font-size: 0.9rem;
 }
@@ -55,6 +57,14 @@ body {
   padding: 1rem;
 }
 
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid #0f5bcc;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
 section {
   max-width: 960px;
   margin: 0 auto;
@@ -64,16 +74,88 @@ section {
   padding: 1.25rem;
 }
 
+.dashboard-kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-kpi-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.85rem;
+  background: #f8faff;
+}
+
+.dashboard-kpi-card h2 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.dashboard-kpi-card p {
+  margin: 0.35rem 0 0;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.dashboard-risk-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.dashboard-risk-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+}
+
+.dashboard-risk-table th,
+.dashboard-risk-table td {
+  text-align: left;
+  padding: 0.65rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+
+.report-summary-card,
+.report-evidence-panel {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.95rem;
+  margin-top: 0.85rem;
+}
+
+.report-evidence-panel button {
+  border: 1px solid var(--border);
+  background: #eef3ff;
+  color: var(--text);
+  padding: 0.35rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 p {
   color: var(--muted);
+}
+
+@media (min-width: 700px) {
+  .dashboard-kpi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 1024px) {
   .app-shell__header {
     padding: 1rem 2rem;
+    flex-wrap: nowrap;
   }
 
   .app-shell__main {
     padding: 2rem;
+  }
+
+  section {
+    padding: 1.6rem;
   }
 }

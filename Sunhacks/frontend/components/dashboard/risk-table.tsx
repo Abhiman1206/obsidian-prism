@@ -9,7 +9,7 @@ type RiskTableProps = {
 export function RiskTable({ forecasts }: RiskTableProps) {
   return (
     <div className="dashboard-risk-table-wrap">
-      <table className="dashboard-risk-table">
+      <table className="dashboard-risk-table" aria-label="Ranked risk components">
         <thead>
           <tr>
             <th scope="col">Component</th>

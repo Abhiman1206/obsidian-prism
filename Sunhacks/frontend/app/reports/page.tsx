@@ -21,7 +21,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   const selectedReport = reports[0];
 
   return (
-    <section>
+    <section aria-label="Executive report content">
       <h1>Executive Report</h1>
       <p>Report scope: {runId}</p>
 
