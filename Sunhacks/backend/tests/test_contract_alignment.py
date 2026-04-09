@@ -10,6 +10,7 @@ from backend.app.domain.contracts import (  # noqa: E402
     ExecutiveReportSummary,
     HealthScore,
     RiskForecast,
+    RiskSignal,
 )
 
 
@@ -36,6 +37,11 @@ def test_risk_forecast_has_expected_fields() -> None:
     }.issubset(fields)
 
 
+def test_risk_signal_has_expected_fields() -> None:
+    fields = set(RiskSignal.model_fields.keys())
+    assert {"signal_name", "contribution_strength"}.issubset(fields)
+
+
 def test_frontend_contracts_include_core_backend_fields() -> None:
     source = _frontend_contracts_source()
 
@@ -50,6 +56,11 @@ def test_frontend_contracts_include_core_backend_fields() -> None:
         assert field in source
 
     for field in RiskForecast.model_fields.keys():
+        assert field in source
+
+    assert "export interface RiskSignal" in source
+
+    for field in RiskSignal.model_fields.keys():
         assert field in source
 
     for field in ExecutiveReportSummary.model_fields.keys():
