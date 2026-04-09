@@ -15,9 +15,9 @@
 
 ### Code Health Scoring
 
-- [ ] **HEALTH-01**: System computes cyclomatic complexity and maintainability metrics per module/file using Radon.
+- [x] **HEALTH-01**: System computes cyclomatic complexity and maintainability metrics per module/file using Radon.
 - [ ] **HEALTH-02**: System derives a normalized health score per component from complexity, maintainability, and change volatility inputs.
-- [ ] **HEALTH-03**: Health score output includes contributing factors for explainability.
+- [x] **HEALTH-03**: Health score output includes contributing factors for explainability.
 
 ### Predictive Risk Forecasting
 
@@ -79,9 +79,9 @@
 | INGEST-03 | Phase 2 | Complete |
 | INGEST-04 | Phase 2 | Complete |
 | INGEST-05 | Phase 2 | Complete |
-| HEALTH-01 | Phase 3 | Pending |
+| HEALTH-01 | Phase 3 | Complete |
 | HEALTH-02 | Phase 3 | Pending |
-| HEALTH-03 | Phase 3 | Pending |
+| HEALTH-03 | Phase 3 | Complete |
 | RISK-01 | Phase 4 | Pending |
 | RISK-02 | Phase 4 | Pending |
 | RISK-03 | Phase 4 | Pending |
