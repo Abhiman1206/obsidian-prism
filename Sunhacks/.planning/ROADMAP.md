@@ -6,8 +6,8 @@ This roadmap builds a production-ready predictive engineering intelligence produ
 
 ## Phases
 
-- [ ] **Phase 1: Platform Foundation and Contracts** - Establish FastAPI/Next.js project skeleton, domain contracts, and orchestration baseline.
-- [ ] **Phase 2: Repository Ingestion and Evidence Graph** - Implement GitHub/GitLab/PyDriller ingestion with canonical storage and lineage.
+- [x] **Phase 1: Platform Foundation and Contracts** - Establish FastAPI/Next.js project skeleton, domain contracts, and orchestration baseline.
+- [x] **Phase 2: Repository Ingestion and Evidence Graph** - Implement GitHub/GitLab/PyDriller ingestion with canonical storage and lineage.
 - [ ] **Phase 3: Code Health Scoring Engine** - Build Radon-driven scoring pipeline and explainable component health outputs.
 - [ ] **Phase 4: 90-Day Predictive Risk Forecasting** - Implement risk model, confidence scoring, and ranked risk outputs.
 - [ ] **Phase 5: Business Impact Synthesis** - Translate technical risk into executive-friendly cost-of-inaction reporting.
@@ -128,7 +128,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Platform Foundation and Contracts | 3/3 | Complete | 2026-04-09 |
-| 2. Repository Ingestion and Evidence Graph | 0/4 | Not started | - |
+| 2. Repository Ingestion and Evidence Graph | 4/4 | Complete | 2026-04-10 |
 | 3. Code Health Scoring Engine | 0/3 | Not started | - |
 | 4. 90-Day Predictive Risk Forecasting | 0/3 | Not started | - |
 | 5. Business Impact Synthesis | 0/3 | Not started | - |
