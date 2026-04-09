@@ -88,7 +88,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Define deterministic business assumptions and KPI translation engine.
+- [x] 05-01-PLAN.md — Define deterministic business assumptions and KPI translation engine.
 - [ ] 05-02-PLAN.md — Implement executive narrative writer templates and report contract alignment.
 - [ ] 05-03-PLAN.md — Persist evidence-linked report claims and expose executive report retrieval API.
 
