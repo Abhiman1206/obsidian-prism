@@ -73,9 +73,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: Implement risk feature pipeline combining health, churn, and historical defects.
-- [ ] 04-02: Implement forecasting model and confidence estimation.
-- [ ] 04-03: Expose ranked risk APIs with contributor details.
+- [ ] 04-01-PLAN.md — Implement risk feature pipeline combining health, churn, and historical defect proxies.
+- [ ] 04-02-PLAN.md — Implement deterministic forecasting model, confidence estimation, and contributor signals.
+- [ ] 04-03-PLAN.md — Expose ranked risk forecast APIs with run-scoped retrieval and contributor details.
 
 ### Phase 5: Business Impact Synthesis
 **Goal**: Convert predictive technical outputs into executive-ready financial decision support.
