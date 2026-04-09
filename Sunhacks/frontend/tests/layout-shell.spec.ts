@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { createElement } from "react";
+import { vi } from "vitest";
 
 import AppShell from "../components/layout/app-shell";
 import HomePage from "../app/page";
@@ -12,13 +13,21 @@ describe("app shell", () => {
     expect(screen.getByTestId("app-shell")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
     expect(screen.getByRole("link", { name: "Runs" })).toHaveAttribute("href", "/runs");
+    expect(screen.getByRole("link", { name: "Reports" })).toHaveAttribute("href", "/reports");
   });
 
   it("renders homepage placeholders", () => {
-    render(createElement(HomePage));
+    vi.spyOn(global, "fetch").mockResolvedValue({
+      ok: true,
+      json: async () => [],
+    } as Response);
 
-    expect(screen.getByRole("heading", { name: "Repository Risk Dashboard" })).toBeInTheDocument();
-    expect(screen.getByLabelText("kpi-summary-placeholder")).toBeInTheDocument();
+    return HomePage({ searchParams: Promise.resolve({ run_id: "run-123" }) }).then((page) => {
+      render(page);
+
+      expect(screen.getByRole("heading", { name: "Repository Risk Dashboard" })).toBeInTheDocument();
+      expect(screen.getByText("No risk forecast data available for this run.")).toBeInTheDocument();
+    });
   });
 
   it("renders runs page placeholders", () => {

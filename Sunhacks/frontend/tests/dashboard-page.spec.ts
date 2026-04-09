@@ -82,6 +82,7 @@ describe("dashboard page", () => {
     expect(screen.getByText("Average Confidence")).toBeInTheDocument();
     expect(screen.getByText("77%"))
       .toBeInTheDocument();
+    expect(screen.getByRole("table", { name: "Ranked risk components" })).toBeInTheDocument();
   });
 
   it("renders empty-state copy when API returns no records", async () => {

@@ -55,6 +55,7 @@ describe("reports page", () => {
     render(await ReportsPage({ searchParams: Promise.resolve({ run_id: "run-123" }) }));
 
     expect(screen.getByRole("heading", { name: "Executive Report" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Executive report content" })).toBeInTheDocument();
     expect(screen.getByText("The API layer is the primary risk concentration.")).toBeInTheDocument();
     expect(screen.getByText("Top Risks")).toBeInTheDocument();
     expect(screen.getByText("Recommended Priorities")).toBeInTheDocument();
