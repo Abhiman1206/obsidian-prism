@@ -58,9 +58,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: Integrate Radon metric extraction service with file filtering and fallbacks.
-- [ ] 03-02: Implement health score aggregation and normalization algorithm.
-- [ ] 03-03: Persist and expose explainability metadata for health scores.
+- [ ] 03-01-PLAN.md — Implement Radon metric extraction and expand health factor contracts.
+- [ ] 03-02-PLAN.md — Implement deterministic health score normalization and weighted aggregation.
+- [ ] 03-03-PLAN.md — Persist and expose explainability-rich health score payloads via API.
 
 ### Phase 4: 90-Day Predictive Risk Forecasting
 **Goal**: Forecast near-term component failure risk with ranked outputs and confidence signals.
