@@ -16,10 +16,11 @@ Translate engineering risk into financially actionable decisions for executives 
 - [x] Provider ingestion, normalization, and cadence extraction produce canonical payloads (Phase 2).
 - [x] Incremental checkpoint-based ingestion resume semantics are implemented (Phase 2).
 - [x] Ingestion evidence lineage is persisted and queryable by run (Phase 2).
+- [x] Deterministic module health scoring computes explainable weighted factors from maintainability/complexity/volatility (Phase 3).
+- [x] Health score results are persisted per run and exposed via API with factor-level explainability payloads (Phase 3).
 
 ### Active
 
-- [ ] Compute module health scores from maintainability, complexity, coverage trends, and change volatility.
 - [ ] Predict 90-day failure likelihood per component using weighted risk modeling.
 - [ ] Quantify business cost of inaction and generate CEO-safe narrative reports.
 - [ ] Provide responsive web UI for risk dashboards and executive reporting.
@@ -60,6 +61,8 @@ Translate engineering risk into financially actionable decisions for executives 
 | Normalize provider payloads before persistence | Avoid GitHub/GitLab drift across downstream scoring/risk/reporting phases | Applied in Phase 2 |
 | Advance checkpoints only after persistence success | Prevent data loss and duplicate processing during incremental ingestion retries | Applied in Phase 2 |
 | Persist lineage records at ingestion time | Preserve deterministic claim-to-source traceability for auditability | Applied in Phase 2 |
+| Use fixed health factor weights and clamped normalization | Keep score behavior deterministic and explainable for executive-facing reporting | Applied in Phase 3 |
+| Persist health scores behind repository boundary with run-scoped API reads | Keep write/read responsibilities explicit and stable for downstream risk/report consumers | Applied in Phase 3 |
 
 ## Evolution
 
@@ -79,4 +82,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-10 after Phase 2 completion*
+*Last updated: 2026-04-10 after Phase 3 completion*
