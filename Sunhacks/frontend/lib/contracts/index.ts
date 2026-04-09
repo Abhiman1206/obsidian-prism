@@ -31,7 +31,12 @@ export interface RiskForecast {
   horizon_days: number;
   risk_probability: number;
   confidence: number;
-  top_signals: string[];
+  top_signals: RiskSignal[];
+}
+
+export interface RiskSignal {
+  signal_name: string;
+  contribution_strength: number;
 }
 
 export interface ExecutiveReportSummary {
