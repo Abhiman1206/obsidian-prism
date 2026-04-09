@@ -11,7 +11,7 @@
 - [x] **INGEST-02**: User can connect a GitLab repository and authorize analysis scopes.
 - [x] **INGEST-03**: System can ingest commit history, changed files, and contributor churn for selected repositories.
 - [x] **INGEST-04**: System can capture issue/deployment cadence signals from provider APIs when available.
-- [ ] **INGEST-05**: Ingestion jobs can resume incrementally without reprocessing full history.
+- [x] **INGEST-05**: Ingestion jobs can resume incrementally without reprocessing full history.
 
 ### Code Health Scoring
 
@@ -78,7 +78,7 @@
 | INGEST-02 | Phase 2 | Complete |
 | INGEST-03 | Phase 2 | Complete |
 | INGEST-04 | Phase 2 | Complete |
-| INGEST-05 | Phase 2 | Pending |
+| INGEST-05 | Phase 2 | Complete |
 | HEALTH-01 | Phase 3 | Pending |
 | HEALTH-02 | Phase 3 | Pending |
 | HEALTH-03 | Phase 3 | Pending |
