@@ -103,7 +103,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Build responsive risk dashboard views with ranking and KPI summaries.
+- [x] 06-01-PLAN.md — Build responsive risk dashboard views with ranking and KPI summaries.
 - [ ] 06-02-PLAN.md — Build executive report pages with drill-down evidence linking.
 - [ ] 06-03-PLAN.md — Complete accessibility and responsive QA polish across critical screens.
 
