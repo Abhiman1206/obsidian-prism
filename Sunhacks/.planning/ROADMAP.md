@@ -110,18 +110,21 @@ Plans:
 ### Phase 7: Reliability Hardening and Render Deployment
 **Goal**: Ensure resilient operations and deploy production-ready containerized services on Render.
 **Depends on**: Phase 6
-**Requirements**: AUDIT-02, AUDIT-03, PLAT-02, PLAT-03
+**Requirements**: INGEST-01, INGEST-02, INGEST-03, INGEST-04, INGEST-05, HEALTH-02, HEALTH-03, RISK-01, RISK-02, RISK-03, AUDIT-02, AUDIT-03, PLAT-02, PLAT-03
 **Success Criteria** (what must be TRUE):
-  1. External API/tool paths have timeout, retry, and degraded-mode handling.
-  2. Backend/frontend services run in Docker and deploy successfully on Render.
-  3. Observability and run-failure diagnostics are available for operations.
-**Plans**: 4 plans
+  1. Provider and mining paths use reliable, test-covered integration behavior.
+  2. Health/risk signals include complete forecasting inputs needed for 90-day compliance.
+  3. Run orchestration executes a real multi-stage pipeline with graceful task-level failure behavior.
+  4. Backend/frontend services run in Docker and deploy successfully on Render.
+**Plans**: 6 plans
 
 Plans:
-- [ ] 07-01: Implement watchdog timeout and adaptive retry wrappers.
-- [ ] 07-02: Add fault-tolerant task orchestration and graceful degradation handling.
-- [ ] 07-03: Finalize Docker images and deployment configuration for Render.
-- [ ] 07-04: Add monitoring, health checks, and operational runbooks.
+- [x] 07-01-PLAN.md - Implement live provider adapters with timeout/retry and strict auth checks.
+- [x] 07-02-PLAN.md - Implement resilient incremental mining and checkpoint-safe ingestion behavior.
+- [x] 07-03-PLAN.md - Add coverage-trend signals across health scoring and risk feature pipelines.
+- [x] 07-04-PLAN.md - Finalize 90-day forecasting confidence and ranked retrieval compliance.
+- [x] 07-05-PLAN.md - Replace placeholder run lifecycle with real multi-stage orchestration.
+- [ ] 07-06-PLAN.md - Finalize Docker and Render deployment readiness with health checks and runbooks.
 
 ## Progress
 
@@ -133,4 +136,4 @@ Plans:
 | 4. 90-Day Predictive Risk Forecasting | 3/3 | Complete | 2026-04-10 |
 | 5. Business Impact Synthesis | 0/3 | Not started | - |
 | 6. Responsive Next.js Dashboard and Reporting UX | 3/3 | Complete | 2026-04-10 |
-| 7. Reliability Hardening and Render Deployment | 0/4 | Not started | - |
+| 7. Reliability Hardening and Render Deployment | 5/6 | In progress | - |
