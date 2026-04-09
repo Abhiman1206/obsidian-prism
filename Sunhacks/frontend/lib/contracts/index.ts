@@ -11,8 +11,19 @@ export interface ComponentProfile {
 export interface HealthScore {
   component_id: string;
   score: number;
+  run_id: string;
+  repository_id: string;
   contributors: string[];
+  factors: HealthFactor[];
   measured_at: string;
+}
+
+export interface HealthFactor {
+  name: string;
+  weight: number;
+  raw_value: number;
+  normalized_value: number;
+  direction: "positive" | "negative";
 }
 
 export interface RiskForecast {

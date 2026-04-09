@@ -40,6 +40,8 @@ def test_frontend_contracts_include_core_backend_fields() -> None:
     source = _frontend_contracts_source()
 
     assert "export type RunStatus = \"queued\" | \"running\" | \"succeeded\" | \"failed\";" in source
+    assert "export interface HealthFactor" in source
+    assert "factors: HealthFactor[];" in source
 
     for field in ComponentProfile.model_fields.keys():
         assert field in source
