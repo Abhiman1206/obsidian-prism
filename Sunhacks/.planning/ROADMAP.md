@@ -88,9 +88,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 05-01: Define business assumption model and KPI translation engine.
-- [ ] 05-02: Implement report writer agent templates for executive narrative.
-- [ ] 05-03: Connect report claims to evidence lineage references.
+- [ ] 05-01-PLAN.md — Define deterministic business assumptions and KPI translation engine.
+- [ ] 05-02-PLAN.md — Implement executive narrative writer templates and report contract alignment.
+- [ ] 05-03-PLAN.md — Persist evidence-linked report claims and expose executive report retrieval API.
 
 ### Phase 6: Responsive Next.js Dashboard and Reporting UX
 **Goal**: Deliver intuitive, responsive visualization and report interaction for executive and leadership users.
