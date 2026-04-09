@@ -1,5 +1,6 @@
 from app.infra.providers.github_client import GitHubClient
 from app.infra.providers.gitlab_client import GitLabClient
+from app.domain.ingestion.normalization import normalize_provider_payload
 
 
 
@@ -79,6 +80,40 @@ def test_provider_clients_enforce_timeout_boundaries() -> None:
         assert False, "Expected timeout validation failure"
     except ValueError:
         assert True
+
+
+def test_normalize_provider_payload_builds_canonical_commit_and_churn_shape() -> None:
+    payload = normalize_provider_payload(
+        repository_id="repo-acme-platform",
+        provider="github",
+        commits=[
+            {
+                "sha": "abc123",
+                "authored_at": "2026-04-01T00:00:00Z",
+                "author_email": "dev@acme.com",
+                "files": [
+                    {"path": "a.py", "additions": 10, "deletions": 2},
+                    {"path": "b.py", "additions": 5, "deletions": 1},
+                ],
+            },
+            {
+                "sha": "def456",
+                "authored_at": "2026-04-02T00:00:00Z",
+                "author_email": "dev@acme.com",
+                "files": [{"path": "c.py", "additions": 2, "deletions": 0}],
+            },
+        ],
+    )
+
+    assert payload["repository_id"] == "repo-acme-platform"
+    assert payload["provider"] == "github"
+    assert len(payload["commits"]) == 2
+    assert payload["commits"][0]["files_changed"] == 2
+    assert payload["commits"][0]["insertions"] == 15
+    assert payload["commits"][0]["deletions"] == 3
+    assert payload["churn"][0]["contributor"] == "dev@acme.com"
+    assert payload["churn"][0]["commits_last_30d"] == 2
+    assert payload["churn"][0]["files_touched_last_30d"] == 3
 
     try:
         GitLabClient(timeout_seconds=-1)
