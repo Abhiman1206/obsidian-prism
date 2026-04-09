@@ -40,7 +40,7 @@ describe("dashboard page", () => {
       },
     ]);
 
-    render(await HomePage({ searchParams: { run_id: "run-123" } }));
+    render(await HomePage({ searchParams: Promise.resolve({ run_id: "run-123" }) }));
 
     const rows = screen.getAllByRole("row").slice(1);
     expect(within(rows[0]).getByText("api-gateway")).toBeInTheDocument();
@@ -73,7 +73,7 @@ describe("dashboard page", () => {
       },
     ]);
 
-    render(await HomePage({ searchParams: { run_id: "run-123" } }));
+    render(await HomePage({ searchParams: Promise.resolve({ run_id: "run-123" }) }));
 
     expect(screen.getByText("Total Components")).toBeInTheDocument();
     expect(screen.getByText("3")).toBeInTheDocument();
@@ -87,7 +87,7 @@ describe("dashboard page", () => {
   it("renders empty-state copy when API returns no records", async () => {
     mockRiskResponse([]);
 
-    render(await HomePage({ searchParams: { run_id: "run-empty" } }));
+    render(await HomePage({ searchParams: Promise.resolve({ run_id: "run-empty" }) }));
 
     expect(screen.getByText("No risk forecast data available for this run.")).toBeInTheDocument();
   });
