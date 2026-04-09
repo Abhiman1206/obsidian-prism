@@ -1,0 +1,79 @@
+:root {
+  --bg: #f7f8fb;
+  --surface: #ffffff;
+  --text: #10213a;
+  --muted: #5f728f;
+  --border: #d8deea;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  color: var(--text);
+  background: linear-gradient(180deg, #f3f6fb 0%, #e9eef7 100%);
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.app-shell__header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+}
+
+.app-shell__brand {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.app-shell__nav {
+  display: flex;
+  gap: 0.875rem;
+  font-size: 0.9rem;
+}
+
+.app-shell__nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.app-shell__main {
+  padding: 1rem;
+}
+
+section {
+  max-width: 960px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+
+p {
+  color: var(--muted);
+}
+
+@media (min-width: 1024px) {
+  .app-shell__header {
+    padding: 1rem 2rem;
+  }
+
+  .app-shell__main {
+    padding: 2rem;
+  }
+}
