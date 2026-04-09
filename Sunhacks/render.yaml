@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: pei-backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    healthCheckPath: /healthz
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: PYTHONUNBUFFERED
+        value: "1"
+
+  - type: web
+    name: pei-frontend
+    env: docker
+    dockerfilePath: frontend/Dockerfile
+    dockerContext: frontend
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: NEXT_PUBLIC_API_BASE_URL
+        sync: false

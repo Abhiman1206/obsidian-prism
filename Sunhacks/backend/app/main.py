@@ -22,6 +22,14 @@ app.include_router(risk_forecasts_router)
 app.include_router(runs_router)
 
 
+@app.get("/healthz")
+def healthz() -> dict[str, str]:
+	return {
+		"status": "ok",
+		"service": "predictive-engineering-intelligence",
+	}
+
+
 @app.exception_handler(RequestValidationError)
 def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
 	details = {"errors": str(exc.errors())}
