@@ -19,7 +19,7 @@ def test_score_is_in_0_to_100_range() -> None:
         volatility=0.2,
     )
 
-    assert 0 <= scored["score"] <= 100
+    assert 0 <= scored["score"] <= 100, "score must be in [0, 100]"
 
 
 def test_weights_are_fixed_and_factor_names_are_expected() -> None:
