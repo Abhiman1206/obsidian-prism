@@ -57,6 +57,12 @@ export interface PriorityRecommendation {
   expected_total_cost: number;
 }
 
+export interface ExecutiveReportClaim {
+  claim_id: string;
+  claim_text: string;
+  lineage_refs: string[];
+}
+
 export interface ExecutiveReportSummary {
   report_id: string;
   run_id: string;
@@ -65,5 +71,6 @@ export interface ExecutiveReportSummary {
   top_risks: TopRiskItem[];
   cost_of_inaction: CostOfInactionSection;
   recommended_priorities: PriorityRecommendation[];
+  claims: ExecutiveReportClaim[];
   generated_at: string;
 }
