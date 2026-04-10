@@ -1,25 +1,48 @@
-# Copilot Instructions (Project)
+# Project Instructions: Predictive Engineering Intelligence Platform
 
-This repository is initialized with a GSD planning workflow.
+## Mission
 
-## Source of Truth
-- `.planning/PROJECT.md` for project context and scope boundaries
-- `.planning/REQUIREMENTS.md` for checkable requirement IDs
-- `.planning/ROADMAP.md` for phase ordering and success criteria
-- `.planning/STATE.md` for active phase and continuity
+Build a production-grade Predictive Engineering Intelligence Platform that turns repository-level engineering risk into executive financial decision support.
 
-## Working Rules
-- Prefer small, verifiable increments that map to roadmap phase goals.
-- Preserve deterministic behavior in risk/compliance logic.
-- Keep CrewAI and LangGraph paths contract-compatible.
-- Do not introduce interactive secret prompts in runtime code.
-- Maintain structured error handling and observability hooks.
+## Product Scope
 
-## Quality Gate
-Before closing a phase, ensure:
-1. Covered requirement IDs are implemented and testable.
-2. Tests and static checks pass.
-3. Documentation and state files are updated.
+- Backend: FastAPI (Python) in Docker.
+- Frontend: Next.js responsive application.
+- Deployment: Render.
+- Core capabilities:
+  - GitHub/GitLab repository ingestion.
+  - Code health scoring.
+  - 90-day predictive component risk forecasting.
+  - Business impact translation for executive reports.
+  - Traceable evidence lineage for all report claims.
+
+## Workflow Sources of Truth
+
+- [PROJECT](.planning/PROJECT.md)
+- [REQUIREMENTS](.planning/REQUIREMENTS.md)
+- [ROADMAP](.planning/ROADMAP.md)
+- [STATE](.planning/STATE.md)
+- Research: .planning/research/
+
+## Non-Negotiable Engineering Standards
+
+- Preserve auditability: every major KPI and recommendation must be traceable to deterministic evidence.
+- Avoid jargon in executive output: prioritize business language and explicit cost framing.
+- Keep reliability first for tool/API integrations: timeouts, retries, graceful degradation.
+- Build mobile-friendly and desktop-friendly UI from the start.
+- Keep contracts typed and explicit between backend, agents, and frontend.
+
+## Implementation Defaults
+
+- Prefer small, testable increments aligned to roadmap phases.
+- Keep orchestration logic isolated from pure domain scoring logic.
+- Do not introduce autonomous code-remediation features in v1.
+- Keep deployment container-first and environment-driven.
 
 ## Next Command
-Run `/gsd-discuss-phase 1` to start execution planning.
+
+After initialization, continue with:
+- `/gsd-plan-phase 1`
+
+Optional before planning:
+- `/gsd-discuss-phase 1`
