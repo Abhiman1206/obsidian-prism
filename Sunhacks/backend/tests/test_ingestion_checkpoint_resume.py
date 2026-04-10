@@ -79,3 +79,29 @@ def test_incremental_worker_does_not_advance_checkpoint_on_persist_failure() -> 
         checkpoint = store.load("repo-acme-platform", "github")
         assert checkpoint["last_processed_commit_sha"] is None
         assert checkpoint["status"] == "failed"
+
+
+def test_incremental_worker_can_run_with_repository_path_mode() -> None:
+    store = CheckpointStore()
+    persisted = []
+
+    def persist(records: list[dict]) -> None:
+        persisted.extend(records)
+
+    result = run_incremental_ingestion(
+        repository_id="repo-acme-platform",
+        provider="github",
+        commits=None,
+        repository_path="./repo",
+        checkpoint_store=store,
+        persist_records=persist,
+        mine_commits=lambda **_kwargs: [
+            {"sha": "a1", "authored_at": "2026-03-01T00:00:00Z", "files": []},
+            {"sha": "b2", "authored_at": "2026-03-02T00:00:00Z", "files": []},
+        ],
+    )
+
+    assert len(result["mined_commits"]) == 2
+    assert persisted[-1]["sha"] == "b2"
+    checkpoint = store.load("repo-acme-platform", "github")
+    assert checkpoint["last_processed_commit_sha"] == "b2"
