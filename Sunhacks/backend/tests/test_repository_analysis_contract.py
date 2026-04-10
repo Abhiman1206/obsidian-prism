@@ -21,6 +21,8 @@ def test_repository_analysis_returns_structured_response() -> None:
                 "contributor_count": 5,
                 "archived": False,
                 "has_readme": True,
+                "file_count": 256,
+                "repository_size_bytes": 1048576,
                 "primary_language": "Python",
                 "languages": [
                     {"language": "Python", "bytes": 1000, "percentage": 80.0},
@@ -54,6 +56,8 @@ def test_repository_analysis_returns_structured_response() -> None:
     body = response.json()
     assert body["provider"] == "github"
     assert body["repository_name"] == "Abhiman1206/AI_APP"
+    assert body["file_count"] == 256
+    assert body["repository_size_bytes"] == 1048576
     assert {"score", "summary"}.issubset(body["health"].keys())
     assert isinstance(body["languages"], list)
     assert isinstance(body["recent_commits"], list)

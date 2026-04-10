@@ -46,6 +46,8 @@ describe("app shell", () => {
         contributor_count: 1,
         archived: false,
         has_readme: true,
+        file_count: 128,
+        repository_size_bytes: 524288,
         primary_language: "Python",
         languages: [],
         topics: [],

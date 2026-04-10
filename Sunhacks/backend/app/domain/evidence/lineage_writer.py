@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+import uuid
 
 from app.domain.evidence.repository import LineageRepository
 from app.domain.evidence.schema import LineageRecord
@@ -10,9 +11,9 @@ class LineageWriter:
 
     def write_lineage(self, run_id: str, repository_id: str, artifacts: list[dict]) -> list[LineageRecord]:
         records: list[LineageRecord] = []
-        for index, artifact in enumerate(artifacts, start=1):
+        for artifact in artifacts:
             record = LineageRecord(
-                lineage_id=f"lin-{run_id}-{index}",
+                lineage_id=f"lin-{run_id}-{uuid.uuid4().hex[:12]}",
                 run_id=run_id,
                 repository_id=repository_id,
                 artifact_type=artifact["artifact_type"],

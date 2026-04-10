@@ -7,12 +7,10 @@ type InsightsPageProps = {
   }>;
 };
 
-const DEFAULT_REPOSITORY_URL = "https://github.com/Abhiman1206/AI_APP.git";
-
-function normalizeRepositoryUrl(raw: string | string[] | undefined): string {
+function normalizeRepositoryUrl(raw: string | string[] | undefined): string | null {
   const value = Array.isArray(raw) ? raw[0] : raw;
   const trimmed = value?.trim();
-  return trimmed && trimmed.length > 0 ? trimmed : DEFAULT_REPOSITORY_URL;
+  return trimmed && trimmed.length > 0 ? trimmed : null;
 }
 
 function buildFaultHeatmap(commitDates: string[]): number[] {
@@ -62,7 +60,7 @@ function formatDate(value: string | null): string {
 export default async function InsightsHubPage({ searchParams }: InsightsPageProps) {
   const resolvedSearchParams = (await searchParams) ?? {};
   const repositoryUrl = normalizeRepositoryUrl(resolvedSearchParams.repository_url);
-  const analysis = await analyzeRepository(repositoryUrl);
+  const analysis = repositoryUrl ? await analyzeRepository(repositoryUrl) : null;
 
   if (!analysis) {
     return (
@@ -75,7 +73,9 @@ export default async function InsightsHubPage({ searchParams }: InsightsPageProp
         </div>
         <div className="glass-panel" style={{ padding: "1rem" }}>
           <p style={{ margin: 0 }}>
-            Insights are unavailable because repository analysis could not be loaded from backend.
+            {repositoryUrl
+              ? "Insights are unavailable because repository analysis could not be loaded from backend."
+              : "Provide a repository URL to load insights for your repository of choice."}
           </p>
         </div>
       </section>

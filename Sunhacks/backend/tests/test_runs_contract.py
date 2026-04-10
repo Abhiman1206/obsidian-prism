@@ -202,3 +202,72 @@ def test_run_success_message_mentions_multi_agent_pipeline() -> None:
     assert status_response.status_code == 200
     status_body = status_response.json()
     assert "multi-agent" in (status_body.get("message") or "").lower()
+
+
+def test_create_run_uses_registered_repository_connection() -> None:
+    client = TestClient(app)
+    registration_payload = {
+        "provider": "github",
+        "repository_url": "https://github.com/acme/platform",
+        "repository_name": "acme/platform",
+        "auth": {
+            "provider": "github",
+            "access_token": "token-registered-123",
+            "scopes": ["repo:read"],
+        },
+    }
+
+    register_response = client.post(
+        "/api/repositories/register",
+        json=registration_payload,
+        headers={"x-user-id": "owner-user"},
+    )
+    assert register_response.status_code == 200
+    repository_id = register_response.json()["repository_id"]
+
+    run_response = client.post(
+        "/api/runs",
+        json={
+            "repository_id": repository_id,
+            "provider": "github",
+            "branch": "main",
+        },
+        headers={"x-user-id": "owner-user"},
+    )
+
+    assert run_response.status_code == 200
+    assert run_response.json()["status"] == "succeeded"
+
+
+def test_create_run_rejects_non_owner_for_registered_repository() -> None:
+    client = TestClient(app)
+    registration_payload = {
+        "provider": "github",
+        "repository_url": "https://github.com/acme/platform",
+        "repository_name": "acme/platform",
+        "auth": {
+            "provider": "github",
+            "access_token": "token-registered-123",
+            "scopes": ["repo:read"],
+        },
+    }
+
+    register_response = client.post(
+        "/api/repositories/register",
+        json=registration_payload,
+        headers={"x-user-id": "owner-user"},
+    )
+    assert register_response.status_code == 200
+    repository_id = register_response.json()["repository_id"]
+
+    run_response = client.post(
+        "/api/runs",
+        json={
+            "repository_id": repository_id,
+            "provider": "github",
+            "branch": "main",
+        },
+        headers={"x-user-id": "different-user"},
+    )
+
+    assert run_response.status_code == 403

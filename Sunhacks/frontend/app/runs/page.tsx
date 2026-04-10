@@ -1,19 +1,18 @@
 import React from "react";
 import { analyzeRepository } from "../../lib/api/repositories";
-import { getRunStatus, inferRunIds } from "../../lib/api/runs";
+import { getRunStatus } from "../../lib/api/runs";
 
 type RunsPageProps = {
   searchParams?: Promise<{
     repository_url?: string | string[];
+    run_id?: string | string[];
   }>;
 };
 
-const DEFAULT_REPOSITORY_URL = "https://github.com/Abhiman1206/AI_APP.git";
-
-function normalizeRepositoryUrl(raw: string | string[] | undefined): string {
+function normalizeRepositoryUrl(raw: string | string[] | undefined): string | null {
   const value = Array.isArray(raw) ? raw[0] : raw;
   const trimmed = value?.trim();
-  return trimmed && trimmed.length > 0 ? trimmed : DEFAULT_REPOSITORY_URL;
+  return trimmed && trimmed.length > 0 ? trimmed : null;
 }
 
 function statusTone(status: string): { label: string; color: string } {
@@ -49,9 +48,16 @@ function formatDate(value: string | null): string {
 export default async function RunsPage({ searchParams }: RunsPageProps) {
   const resolvedSearchParams = (await searchParams) ?? {};
   const repositoryUrl = normalizeRepositoryUrl(resolvedSearchParams.repository_url);
-  const analysis = await analyzeRepository(repositoryUrl);
+  const analysis = repositoryUrl ? await analyzeRepository(repositoryUrl) : null;
 
-  const runIds = inferRunIds(analysis?.repository_name ?? "repo-123");
+  const runIdParam = Array.isArray(resolvedSearchParams.run_id)
+    ? resolvedSearchParams.run_id.join(",")
+    : resolvedSearchParams.run_id ?? "";
+  const runIds = runIdParam
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+
   const statuses = await Promise.all(runIds.map((runId) => getRunStatus(runId)));
   const runRecords = statuses.filter((record): record is NonNullable<typeof record> => record !== null);
 
@@ -72,19 +78,27 @@ export default async function RunsPage({ searchParams }: RunsPageProps) {
           Repository: <strong>{analysis?.repository_name ?? "not available"}</strong>
         </p>
         <p style={{ margin: 0, color: "var(--muted)" }}>
-          Primary language {primaryLanguage}. Recent commits analyzed: {commitCount}. Health score: {analysis?.health.score ?? "N/A"}/100.
+          {repositoryUrl
+            ? `Primary language ${primaryLanguage}. Recent commits analyzed: ${commitCount}. Health score: ${analysis?.health.score ?? "N/A"}/100.`
+            : "No repository selected. Provide repository_url in the query to load repository diagnostics."}
         </p>
       </div>
 
-      {runRecords.length === 0 ? (
-        <div className="glass-panel" style={{ padding: "1rem" }}>
-          <p style={{ margin: 0 }}>
-            No run records were returned for the inferred run IDs.
-          </p>
-        </div>
-      ) : (
-        <div style={{ display: "grid", gap: "1rem" }} aria-label="run-list-panel">
-          {runRecords.map((run) => {
+      <div style={{ display: "grid", gap: "1rem" }} aria-label="run-list-panel">
+        {runIds.length === 0 ? (
+          <div className="glass-panel" style={{ padding: "1rem" }}>
+            <p style={{ margin: 0 }}>
+              No run ID was provided. Trigger a run from the repository page to view live status.
+            </p>
+          </div>
+        ) : runRecords.length === 0 ? (
+          <div className="glass-panel" style={{ padding: "1rem" }}>
+            <p style={{ margin: 0 }}>
+              No run records were returned for the requested run IDs.
+            </p>
+          </div>
+        ) : (
+          runRecords.map((run) => {
             const tone = statusTone(run.status);
             return (
               <div key={run.run_id} className="glass-panel" style={{ padding: "1rem", display: "grid", gap: "0.5rem" }}>
@@ -98,9 +112,9 @@ export default async function RunsPage({ searchParams }: RunsPageProps) {
                 <p style={{ margin: 0 }}>{run.message ?? "No additional message provided."}</p>
               </div>
             );
-          })}
-        </div>
-      )}
+          })
+        )}
+      </div>
     </section>
   );
 }

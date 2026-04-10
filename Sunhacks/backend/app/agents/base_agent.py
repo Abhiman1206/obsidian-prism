@@ -56,6 +56,10 @@ class BaseSpecialistAgent:
         self.timeout_seconds = timeout_seconds
         self._tool_call_index = 0
 
+    def required_memory_keys(self) -> list[str]:
+        """Return memory keys that must exist after successful execution."""
+        return []
+
     def _invoke_tool(
         self,
         tool_instance: BaseTool,
@@ -72,14 +76,31 @@ class BaseSpecialistAgent:
 
         # Write lineage record for this tool invocation
         try:
+            provider = memory.read("provider", "agent")
+            if provider not in {"github", "gitlab", "pydriller"}:
+                provider = "agent"
+
+            tool_name_lower = tool_name.lower()
+            artifact_type = "tool_output"
+            if "commit" in tool_name_lower:
+                artifact_type = "commit"
+            elif "signal" in tool_name_lower or "cadence" in tool_name_lower:
+                artifact_type = "cadence"
+            elif "churn" in tool_name_lower:
+                artifact_type = "churn"
+            elif "radon" in tool_name_lower or "health" in tool_name_lower:
+                artifact_type = "health"
+            elif "forecast" in tool_name_lower or "risk" in tool_name_lower:
+                artifact_type = "risk"
+
             _LINEAGE_WRITER.write_lineage(
                 run_id=memory.run_id,
                 repository_id=memory.repository_id,
                 artifacts=[
                     {
-                        "artifact_type": "tool_output",
+                        "artifact_type": artifact_type,
                         "artifact_id": f"{tool_name}:{self._tool_call_index}",
-                        "source_provider": self.name,
+                        "source_provider": provider,
                         "source_locator": f"{tool_name}({','.join(args.keys())})",
                         "claim_ref": f"{memory.run_id}:{self.name}:{tool_name}",
                     }
@@ -107,7 +128,13 @@ class BaseSpecialistAgent:
 
         if groq_key:
             try:
-                return self._execute_with_llm(memory, task, groq_key)
+                llm_result = self._execute_with_llm(memory, task, groq_key)
+                if self._has_required_memory(memory):
+                    return llm_result
+                logger.warning(
+                    "Agent %s LLM mode produced incomplete memory state; falling back to deterministic",
+                    self.name,
+                )
             except Exception as exc:
                 logger.warning(
                     "Agent %s LLM mode failed (%s), falling back to deterministic",
@@ -116,6 +143,23 @@ class BaseSpecialistAgent:
                 )
 
         return self.execute_deterministic(memory)
+
+    def _has_required_memory(self, memory: EpistemicMemory) -> bool:
+        required = self.required_memory_keys()
+        if not required:
+            return True
+
+        for key in required:
+            value = memory.read(key)
+            if value is None:
+                return False
+            if isinstance(value, list) and len(value) == 0:
+                return False
+            if isinstance(value, dict) and len(value) == 0:
+                return False
+            if isinstance(value, str) and not value.strip():
+                return False
+        return True
 
     def _execute_with_llm(self, memory: EpistemicMemory, task: str, api_key: str) -> dict[str, Any]:
         """Execute agent using Groq LLM for reasoning about tool usage."""

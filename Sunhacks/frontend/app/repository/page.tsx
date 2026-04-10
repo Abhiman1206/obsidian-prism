@@ -1,6 +1,7 @@
 import React from "react";
 
 import { analyzeRepository } from "../../lib/api/repositories";
+import { PrivateRepoConsole } from "../../components/private-repo-console";
 
 type RepositoryPageProps = {
   searchParams?: Promise<{
@@ -8,18 +9,34 @@ type RepositoryPageProps = {
   }>;
 };
 
-const DEFAULT_REPOSITORY_URL = "https://github.com/Abhiman1206/AI_APP.git";
+function formatBytes(sizeInBytes: number): string {
+  if (!Number.isFinite(sizeInBytes) || sizeInBytes <= 0) {
+    return "0 B";
+  }
 
-function normalizeRepositoryUrl(raw: string | string[] | undefined): string {
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  let value = sizeInBytes;
+  let unitIndex = 0;
+
+  while (value >= 1024 && unitIndex < units.length - 1) {
+    value /= 1024;
+    unitIndex += 1;
+  }
+
+  const decimals = unitIndex === 0 ? 0 : 2;
+  return `${value.toFixed(decimals)} ${units[unitIndex]}`;
+}
+
+function normalizeRepositoryUrl(raw: string | string[] | undefined): string | null {
   const value = Array.isArray(raw) ? raw[0] : raw;
   const trimmed = value?.trim();
-  return trimmed && trimmed.length > 0 ? trimmed : DEFAULT_REPOSITORY_URL;
+  return trimmed && trimmed.length > 0 ? trimmed : null;
 }
 
 export default async function RepositoryExplorerPage({ searchParams }: RepositoryPageProps) {
   const resolvedSearchParams = (await searchParams) ?? {};
   const repositoryUrl = normalizeRepositoryUrl(resolvedSearchParams.repository_url);
-  const analysis = await analyzeRepository(repositoryUrl);
+  const analysis = repositoryUrl ? await analyzeRepository(repositoryUrl) : null;
 
   return (
     <section>
@@ -28,6 +45,10 @@ export default async function RepositoryExplorerPage({ searchParams }: Repositor
         <p>
           Connected GitHub repository analysis and <span className="text-neon">engineering health insights</span>.
         </p>
+      </div>
+
+      <div className="glass-panel" style={{ padding: "1rem", marginBottom: "1rem" }}>
+        <PrivateRepoConsole defaultRepositoryUrl={repositoryUrl ?? ""} />
       </div>
 
       <div className="glass-panel" style={{ padding: "1rem", marginBottom: "1rem" }}>
@@ -40,7 +61,7 @@ export default async function RepositoryExplorerPage({ searchParams }: Repositor
               id="repository_url"
               name="repository_url"
               type="text"
-              defaultValue={repositoryUrl}
+              defaultValue={repositoryUrl ?? ""}
               style={{
                 flex: 1,
                 minWidth: "240px",
@@ -94,6 +115,23 @@ export default async function RepositoryExplorerPage({ searchParams }: Repositor
               <p style={{ margin: "0 0 0.25rem", color: "var(--muted)" }}>Contributors</p>
               <strong style={{ fontSize: "1.4rem" }}>{analysis.contributor_count}</strong>
             </div>
+            <div className="glass-panel" style={{ padding: "1rem" }}>
+              <p style={{ margin: "0 0 0.25rem", color: "var(--muted)" }}>File Count</p>
+              <strong style={{ fontSize: "1.4rem" }}>{analysis.file_count}</strong>
+            </div>
+            <div className="glass-panel" style={{ padding: "1rem" }}>
+              <p style={{ margin: "0 0 0.25rem", color: "var(--muted)" }}>
+                Repository Size{" "}
+                <span
+                  title="Computed as the sum of git blob sizes from the default branch tree."
+                  aria-label="Repository size calculation method"
+                  style={{ fontSize: "0.75rem", cursor: "help" }}
+                >
+                  (i)
+                </span>
+              </p>
+              <strong style={{ fontSize: "1.4rem" }}>{formatBytes(analysis.repository_size_bytes)}</strong>
+            </div>
           </div>
 
           <div style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
@@ -135,7 +173,9 @@ export default async function RepositoryExplorerPage({ searchParams }: Repositor
       ) : (
         <div className="glass-panel" style={{ padding: "1rem" }}>
           <p style={{ margin: 0 }}>
-            Analysis could not be generated. Verify the repository URL is public and that the backend API is running.
+            {repositoryUrl
+              ? "Analysis could not be generated. Verify the repository URL is public and that the backend API is running."
+              : "Enter a repository URL and run analysis to view repository insights."}
           </p>
         </div>
       )}

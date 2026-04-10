@@ -29,6 +29,8 @@ describe("repository page", () => {
       contributor_count: 5,
       archived: false,
       has_readme: true,
+      file_count: 256,
+      repository_size_bytes: 1048576,
       primary_language: "Python",
       languages: [
         { language: "Python", bytes: 1000, percentage: 80 },
@@ -56,6 +58,10 @@ describe("repository page", () => {
     expect(screen.getByRole("heading", { name: "Repository Explorer" })).toBeInTheDocument();
     expect(screen.getByText("Abhiman1206/AI_APP")).toBeInTheDocument();
     expect(screen.getByText("Health Score: 84/100")).toBeInTheDocument();
+    expect(screen.getByText("File Count")).toBeInTheDocument();
+    expect(screen.getByText("256")).toBeInTheDocument();
+    expect(screen.getByText("Repository Size")).toBeInTheDocument();
+    expect(screen.getByText("1.00 MB")).toBeInTheDocument();
     expect(screen.getByText("Language Breakdown")).toBeInTheDocument();
     expect(screen.getByText("Recent Commits")).toBeInTheDocument();
     expect(screen.getByText("Add inference flow")).toBeInTheDocument();
@@ -71,7 +77,7 @@ describe("repository page", () => {
 
     expect(
       screen.getByText(
-        "Analysis could not be generated. Verify the repository URL is public and that the backend API is running.",
+        "Enter a repository URL and run analysis to view repository insights.",
       ),
     ).toBeInTheDocument();
   });

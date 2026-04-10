@@ -3,6 +3,10 @@
 PRD Role: Translates the predictive technical data into a CEO-friendly narrative.
 Applies the Measuring Business Value pattern to convert technical metrics into
 tangible business KPIs, calculating the projected financial cost of inaction.
+
+Now generates TWO reports:
+1. Technical Report — for engineers, showing code health, inactiveness, complexity
+2. Executive Report — for CEOs/CTOs, with KPI dashboards, charts, and business impact
 """
 
 from __future__ import annotations
@@ -53,8 +57,11 @@ class ReportWriterAgent(BaseSpecialistAgent):
     )
     tools = []  # LLM used directly for narrative, not as a tool
 
+    def required_memory_keys(self) -> list[str]:
+        return ["report"]
+
     def execute_deterministic(self, memory: EpistemicMemory) -> dict[str, Any]:
-        """Deterministic execution: translate risks, write report, optionally enhance with LLM."""
+        """Deterministic execution: translate risks, write both reports, optionally enhance with LLM."""
         forecasts = memory.read("forecasts", [])
 
         # Translate risk to business impact
@@ -77,8 +84,12 @@ class ReportWriterAgent(BaseSpecialistAgent):
         else:
             report["summary_source"] = "deterministic"
 
+        # Build the technical report data
+        technical_report = self._build_technical_report(memory, forecasts, report)
+
         memory.write(self.name, "translated_rows", translated)
         memory.write(self.name, "report", report)
+        memory.write(self.name, "technical_report", technical_report)
 
         return {
             "status": "complete",
@@ -87,6 +98,59 @@ class ReportWriterAgent(BaseSpecialistAgent):
             "cost_of_inaction": report.get("cost_of_inaction_estimate", 0),
             "summary_source": report.get("summary_source", "deterministic"),
             "claim_count": len(claims),
+            "reports_generated": ["technical", "executive"],
+        }
+
+    def _build_technical_report(self, memory: EpistemicMemory, forecasts: list[dict], report: dict) -> dict:
+        """Build the technical report data structure from shared memory."""
+        health_rows = memory.read("health_rows", [])
+        raw_commits = memory.read("raw_commits", [])
+        cadence_signals = memory.read("cadence_signals", {})
+        metric_rows = memory.read("metric_rows", [])
+        volatility_map = memory.read("volatility_map", {})
+
+        # Compute inactiveness metrics
+        component_last_seen: dict[str, str] = {}
+        component_touch_count: dict[str, int] = {}
+        for commit in raw_commits:
+            if not isinstance(commit, dict):
+                continue
+            authored_at = str(commit.get("authored_at", ""))
+            for f in commit.get("files", []):
+                if isinstance(f, dict):
+                    path = str(f.get("path", ""))
+                    if path:
+                        component_touch_count[path] = component_touch_count.get(path, 0) + 1
+                        if not component_last_seen.get(path) or authored_at > component_last_seen[path]:
+                            component_last_seen[path] = authored_at
+
+        # Compute loss count — components with declining health (high complexity, low MI)
+        loss_components = []
+        for row in health_rows:
+            score = float(row.get("score", 100))
+            if score < 60:
+                loss_components.append({
+                    "component_id": row.get("component_id", ""),
+                    "score": score,
+                    "reason": "Health score below 60 indicates degrading code quality",
+                })
+
+        return {
+            "report_type": "technical",
+            "run_id": memory.run_id,
+            "repository_id": memory.repository_id,
+            "report_id": report.get("report_id", ""),
+            "generated_at": report.get("generated_at", ""),
+            "health_rows": health_rows,
+            "forecasts": forecasts,
+            "raw_commits_count": len(raw_commits),
+            "cadence_signals": cadence_signals if isinstance(cadence_signals, dict) else {},
+            "metric_rows": metric_rows,
+            "volatility_map": volatility_map if isinstance(volatility_map, dict) else {},
+            "component_last_seen": component_last_seen,
+            "component_touch_count": component_touch_count,
+            "loss_components": loss_components,
+            "loss_count": len(loss_components),
         }
 
     def _build_claims(self, run_id: str, report: dict) -> list[dict]:

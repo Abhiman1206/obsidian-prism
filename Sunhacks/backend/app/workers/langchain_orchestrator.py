@@ -93,9 +93,14 @@ def _persist_results(memory: EpistemicMemory) -> None:
         except Exception as exc:
             logger.error("Failed to persist risk forecasts: %s", exc)
 
-    # Persist executive report
+    # Persist executive report (with technical report data embedded)
     report = memory.read("report")
     if report and isinstance(report, dict):
+        # Attach technical report data so the PDF endpoints can access it
+        technical_report = memory.read("technical_report")
+        if technical_report and isinstance(technical_report, dict):
+            report["technical_report"] = technical_report
+
         try:
             EXECUTIVE_REPORT_REPOSITORY.add(report)
             logger.info("Persisted executive report %s", report.get("report_id", ""))
@@ -104,7 +109,12 @@ def _persist_results(memory: EpistemicMemory) -> None:
 
 
 def orchestrate_run(
-    run_id: str, repository_id: str, provider: str, branch: str | None
+    run_id: str,
+    repository_id: str,
+    provider: str,
+    branch: str | None,
+    repository_slug: str | None = None,
+    provider_token: str | None = None,
 ) -> dict[str, object]:
     """Execute a full analysis run using the multi-agent supervisor architecture.
 
@@ -116,7 +126,7 @@ def orchestrate_run(
     4. Persist all results to SQLite
     5. Return status
     """
-    repository = _repository_slug(repository_id)
+    repository = repository_slug or _repository_slug(repository_id)
 
     # Create shared memory and seed with run context
     memory = EpistemicMemory(run_id=run_id, repository_id=repository_id)
@@ -124,6 +134,8 @@ def orchestrate_run(
     memory.write("supervisor", "repository", repository)
     memory.write("supervisor", "branch", branch)
     memory.write("supervisor", "repository_id", repository_id)
+    if provider_token:
+        memory.write("supervisor", "provider_token", provider_token)
 
     try:
         # Create and run the supervisor

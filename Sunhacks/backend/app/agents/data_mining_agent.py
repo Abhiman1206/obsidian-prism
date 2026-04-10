@@ -13,6 +13,7 @@ from app.agents.base_agent import BaseSpecialistAgent
 from app.agents.shared_memory import EpistemicMemory
 from app.domain.ingestion.normalization import normalize_provider_payload
 from app.domain.ingestion.provider_signals import extract_cadence_signals
+from app.infra.providers.errors import ProviderRequestError
 from app.tools.github_tool import github_fetch_commits, github_fetch_signals
 from app.tools.gitlab_tool import gitlab_fetch_commits, gitlab_fetch_signals
 from app.tools.pydriller_tool import pydriller_mine_repository
@@ -34,10 +35,14 @@ class DataMiningAgent(BaseSpecialistAgent):
         pydriller_mine_repository,
     ]
 
+    def required_memory_keys(self) -> list[str]:
+        return ["raw_commits", "cadence_signals", "churn"]
+
     def execute_deterministic(self, memory: EpistemicMemory) -> dict[str, Any]:
         """Deterministic execution: fetch commits and signals from provider."""
         provider = memory.read("provider", "github")
         repository = memory.read("repository", "")
+        provider_token = memory.read("provider_token", "")
 
         # Fetch commits
         if provider == "github":
@@ -49,11 +54,25 @@ class DataMiningAgent(BaseSpecialistAgent):
         else:
             raise ValueError(f"Unsupported provider: {provider}")
 
-        commit_result = self._invoke_tool(commit_tool, {"repository": repository}, memory)
+        try:
+            commit_result = self._invoke_tool(
+                commit_tool,
+                {"repository": repository, "token": provider_token},
+                memory,
+            )
+        except ProviderRequestError as exc:
+            raise RuntimeError(exc.to_safe_message()) from exc
         raw_commits = commit_result.get("commits", []) if isinstance(commit_result, dict) else []
 
         # Fetch operational signals
-        signal_result = self._invoke_tool(signal_tool, {"repository": repository}, memory)
+        try:
+            signal_result = self._invoke_tool(
+                signal_tool,
+                {"repository": repository, "token": provider_token},
+                memory,
+            )
+        except ProviderRequestError as exc:
+            raise RuntimeError(exc.to_safe_message()) from exc
         cadence_raw = signal_result if isinstance(signal_result, dict) else {}
 
         # Normalize to canonical format

@@ -7,12 +7,10 @@ type TeamPageProps = {
   }>;
 };
 
-const DEFAULT_REPOSITORY_URL = "https://github.com/Abhiman1206/AI_APP.git";
-
-function normalizeRepositoryUrl(raw: string | string[] | undefined): string {
+function normalizeRepositoryUrl(raw: string | string[] | undefined): string | null {
   const value = Array.isArray(raw) ? raw[0] : raw;
   const trimmed = value?.trim();
-  return trimmed && trimmed.length > 0 ? trimmed : DEFAULT_REPOSITORY_URL;
+  return trimmed && trimmed.length > 0 ? trimmed : null;
 }
 
 function toTitleCase(value: string): string {
@@ -102,7 +100,7 @@ function velocityColor(level: number): string {
 export default async function TeamHubPage({ searchParams }: TeamPageProps) {
   const resolvedSearchParams = (await searchParams) ?? {};
   const repositoryUrl = normalizeRepositoryUrl(resolvedSearchParams.repository_url);
-  const analysis = await analyzeRepository(repositoryUrl);
+  const analysis = repositoryUrl ? await analyzeRepository(repositoryUrl) : null;
 
   if (!analysis) {
     return (
@@ -116,8 +114,9 @@ export default async function TeamHubPage({ searchParams }: TeamPageProps) {
 
         <div className="glass-panel" style={{ padding: "1rem" }}>
           <p style={{ margin: 0 }}>
-            Team analytics could not be generated from repository analysis. Verify the repository is reachable and
-            backend API is running.
+            {repositoryUrl
+              ? "Team analytics could not be generated from repository analysis. Verify the repository is reachable and backend API is running."
+              : "Provide a repository URL to load team analytics for your selected repository."}
           </p>
         </div>
       </section>

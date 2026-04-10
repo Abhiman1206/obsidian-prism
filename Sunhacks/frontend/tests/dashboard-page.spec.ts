@@ -16,6 +16,8 @@ const analysisPayload = {
   contributor_count: 5,
   archived: false,
   has_readme: true,
+  file_count: 512,
+  repository_size_bytes: 2097152,
   primary_language: "TypeScript",
   languages: [],
   topics: [],
@@ -90,7 +92,14 @@ describe("dashboard page", () => {
       },
     ]);
 
-    render(await HomePage({ searchParams: Promise.resolve({ run_id: "run-123" }) }));
+    render(
+      await HomePage({
+        searchParams: Promise.resolve({
+          run_id: "run-123",
+          repository_url: "https://github.com/Abhiman1206/AI_APP.git",
+        }),
+      }),
+    );
 
     const rows = screen.getAllByRole("row").slice(1);
     expect(within(rows[0]).getByText("api-gateway")).toBeInTheDocument();
@@ -123,7 +132,14 @@ describe("dashboard page", () => {
       },
     ]);
 
-    render(await HomePage({ searchParams: Promise.resolve({ run_id: "run-123" }) }));
+    render(
+      await HomePage({
+        searchParams: Promise.resolve({
+          run_id: "run-123",
+          repository_url: "https://github.com/Abhiman1206/AI_APP.git",
+        }),
+      }),
+    );
 
     expect(screen.getByText("Repository Stars")).toBeInTheDocument();
     expect(screen.getByText("42")).toBeInTheDocument();

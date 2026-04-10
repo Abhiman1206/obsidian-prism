@@ -56,6 +56,36 @@ class RepositoryAnalyzerService:
         languages = self._build_language_stats(languages_payload)
         recent_commits = self._build_recent_commits(slug, commits_payload)
         contributor_count = self._extract_contributor_count(contributor_headers)
+        default_branch = str(repo_data.get("default_branch", "main"))
+
+        file_count = 0
+        repository_size_bytes = 0
+        # GitHub's repo 'size' field is in KiB and offers a stable fallback estimate.
+        repo_size_kib = int(repo_data.get("size", 0)) if isinstance(repo_data.get("size", 0), int) else 0
+        if repo_size_kib > 0:
+            repository_size_bytes = repo_size_kib * 1024
+        try:
+            branch_payload, _ = self._get_json(client, f"/repos/{slug}/branches/{default_branch}")
+            branch_data = branch_payload if isinstance(branch_payload, dict) else {}
+            commit_node = branch_data.get("commit") if isinstance(branch_data.get("commit"), dict) else {}
+
+            tree_sha: str | None = None
+            nested_commit = commit_node.get("commit") if isinstance(commit_node.get("commit"), dict) else {}
+            nested_tree = nested_commit.get("tree") if isinstance(nested_commit.get("tree"), dict) else {}
+            direct_tree = commit_node.get("tree") if isinstance(commit_node.get("tree"), dict) else {}
+
+            if isinstance(nested_tree.get("sha"), str):
+                tree_sha = nested_tree["sha"]
+            elif isinstance(direct_tree.get("sha"), str):
+                tree_sha = direct_tree["sha"]
+            elif isinstance(commit_node.get("sha"), str):
+                tree_sha = commit_node["sha"]
+
+            if tree_sha:
+                file_count, repository_size_bytes = self._compute_repository_tree_stats(client, slug, tree_sha)
+        except Exception:
+            file_count = 0
+            repository_size_bytes = max(repository_size_bytes, 0)
 
         score = self._compute_health_score(
             has_readme=has_readme,
@@ -72,7 +102,7 @@ class RepositoryAnalyzerService:
             repository_url=f"https://github.com/{slug}",
             repository_name=slug,
             description=repo_data.get("description"),
-            default_branch=str(repo_data.get("default_branch", "main")),
+            default_branch=default_branch,
             stars=int(repo_data.get("stargazers_count", 0)),
             forks=int(repo_data.get("forks_count", 0)),
             watchers=int(repo_data.get("subscribers_count", 0)),
@@ -80,6 +110,8 @@ class RepositoryAnalyzerService:
             contributor_count=contributor_count,
             archived=bool(repo_data.get("archived", False)),
             has_readme=has_readme,
+            file_count=file_count,
+            repository_size_bytes=repository_size_bytes,
             primary_language=repo_data.get("language"),
             languages=languages,
             topics=self._sanitize_topics(repo_data.get("topics", [])),
@@ -181,6 +213,36 @@ class RepositoryAnalyzerService:
         if not isinstance(payload, list):
             return []
         return [str(topic) for topic in payload if isinstance(topic, str)]
+
+    def _compute_repository_tree_stats(self, client: httpx.Client, slug: str, tree_sha: str) -> tuple[int, int]:
+        payload, _ = self._get_json(
+            client,
+            f"/repos/{slug}/git/trees/{tree_sha}",
+            params={"recursive": 1},
+        )
+        if not isinstance(payload, dict):
+            return 0, 0
+
+        tree_entries = payload.get("tree")
+        if not isinstance(tree_entries, list):
+            return 0, 0
+
+        file_count = 0
+        repository_size_bytes = 0
+        for entry in tree_entries:
+            if not isinstance(entry, dict):
+                continue
+            if entry.get("type") != "blob":
+                continue
+
+            file_count += 1
+            size = entry.get("size")
+            if isinstance(size, int):
+                repository_size_bytes += size
+            elif isinstance(size, float):
+                repository_size_bytes += int(size)
+
+        return file_count, repository_size_bytes
 
     def _compute_health_score(
         self,

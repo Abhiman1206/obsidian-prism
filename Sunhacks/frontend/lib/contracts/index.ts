@@ -1,5 +1,64 @@
 export type RunStatus = "queued" | "running" | "succeeded" | "failed";
 
+export type Provider = "github" | "gitlab";
+export type AuthorizationReason =
+  | "authorized_collaborator"
+  | "missing_repo_access"
+  | "token_invalid"
+  | "rate_limited"
+  | "transient_error"
+  | "provider_error";
+
+export interface ProviderAuthPayload {
+  provider: Provider;
+  access_token: string;
+  scopes: string[];
+}
+
+export interface RepositoryRegistrationRequest {
+  provider: Provider;
+  repository_url: string;
+  repository_name: string;
+  auth: ProviderAuthPayload;
+}
+
+export interface RepositoryRegistrationResponse {
+  repository_id: string;
+  provider: Provider;
+  repository_url: string;
+  authorization_status: "authorized" | "pending" | "failed";
+  authorization_reason: AuthorizationReason;
+  run_ready: boolean;
+  owner_user_id: string | null;
+  token_owner_login: string | null;
+}
+
+export interface RepositoryRevalidateRequest {
+  repository_id: string;
+  provider: Provider;
+}
+
+export interface RepositoryRevalidateResponse {
+  repository_id: string;
+  provider: Provider;
+  authorization_status: "authorized" | "pending" | "failed";
+  authorization_reason: AuthorizationReason;
+  run_ready: boolean;
+  owner_user_id: string | null;
+}
+
+export interface CreateRunRequest {
+  repository_id: string;
+  provider: Provider;
+  branch?: string | null;
+}
+
+export interface CreateRunResponse {
+  run_id: string;
+  status: RunStatus;
+  created_at: string;
+}
+
 export interface ComponentProfile {
   component_id: string;
   repository_id: string;
@@ -95,7 +154,7 @@ export interface RepositoryHealthSummary {
 }
 
 export interface RepositoryAnalysis {
-  provider: "github";
+  provider: Provider;
   repository_url: string;
   repository_name: string;
   description: string | null;
@@ -107,6 +166,8 @@ export interface RepositoryAnalysis {
   contributor_count: number;
   archived: boolean;
   has_readme: boolean;
+  file_count: number;
+  repository_size_bytes: number;
   primary_language: string | null;
   languages: RepositoryLanguageStat[];
   topics: string[];

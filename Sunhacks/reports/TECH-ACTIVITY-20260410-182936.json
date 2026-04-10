@@ -1,0 +1,152 @@
+{
+  "generated_at": "2026-04-10T18:29:36.052953Z",
+  "repository": {
+    "path": "C:\\Users\\Asus\\Desktop\\Project\\Sunhacks",
+    "origin": "https://github.com/Abhiman1206/obsidian-prism.git",
+    "branch": "master"
+  },
+  "window": {
+    "days": 90,
+    "start_date": "2026-01-11",
+    "end_date": "2026-04-10"
+  },
+  "activity": {
+    "commit_count": 155,
+    "active_day_count": 5,
+    "inactive_day_count": 85,
+    "activeness_ratio": 5.56,
+    "inactivity_loss_count": 85,
+    "contributor_count": 2,
+    "top_authors": [
+      {
+        "author": "Abhiman1206",
+        "commit_count": 154
+      },
+      {
+        "author": "Abhiman Dheringe",
+        "commit_count": 1
+      }
+    ],
+    "low_activity_weeks": {
+      "2026-W02": 0,
+      "2026-W03": 0,
+      "2026-W04": 0,
+      "2026-W05": 0,
+      "2026-W06": 0,
+      "2026-W07": 0,
+      "2026-W08": 0,
+      "2026-W09": 0,
+      "2026-W10": 0,
+      "2026-W11": 0,
+      "2026-W12": 0
+    }
+  },
+  "flags": {
+    "flag_breakdown": {
+      "inactive_day_flags": 85,
+      "low_activity_week_flags": 11,
+      "stale_file_flags": 187,
+      "single_contributor_risk_flag": 0
+    },
+    "total_flag_count": 283,
+    "flag_severity": "high"
+  },
+  "codebase": {
+    "tracked_file_count": 199,
+    "files_touched_in_window": 12,
+    "stale_file_count": 187,
+    "sample_stale_files": [
+      ".planning/phases/01-platform-foundation-and-contracts/01-01-PLAN.md",
+      ".planning/phases/01-platform-foundation-and-contracts/01-01-SUMMARY.md",
+      ".planning/phases/01-platform-foundation-and-contracts/01-02-PLAN.md",
+      ".planning/phases/01-platform-foundation-and-contracts/01-02-SUMMARY.md",
+      ".planning/phases/01-platform-foundation-and-contracts/01-03-PLAN.md",
+      ".planning/phases/01-platform-foundation-and-contracts/01-03-SUMMARY.md",
+      ".planning/phases/01-platform-foundation-and-contracts/01-RESEARCH.md",
+      ".planning/phases/01-platform-foundation-and-contracts/01-VALIDATION.md",
+      ".planning/phases/02-repository-ingestion-and-evidence-graph/02-01-PLAN.md",
+      ".planning/phases/02-repository-ingestion-and-evidence-graph/02-01-SUMMARY.md",
+      ".planning/phases/02-repository-ingestion-and-evidence-graph/02-02-PLAN.md",
+      ".planning/phases/02-repository-ingestion-and-evidence-graph/02-02-SUMMARY.md",
+      ".planning/phases/02-repository-ingestion-and-evidence-graph/02-03-PLAN.md",
+      ".planning/phases/02-repository-ingestion-and-evidence-graph/02-03-SUMMARY.md",
+      ".planning/phases/02-repository-ingestion-and-evidence-graph/02-04-PLAN.md",
+      ".planning/phases/02-repository-ingestion-and-evidence-graph/02-04-SUMMARY.md",
+      ".planning/phases/02-repository-ingestion-and-evidence-graph/02-RESEARCH.md",
+      ".planning/phases/02-repository-ingestion-and-evidence-graph/02-VERIFICATION.md",
+      ".planning/phases/03-code-health-scoring-engine/03-01-PLAN.md",
+      ".planning/phases/03-code-health-scoring-engine/03-01-SUMMARY.md",
+      ".planning/phases/03-code-health-scoring-engine/03-02-PLAN.md",
+      ".planning/phases/03-code-health-scoring-engine/03-02-SUMMARY.md",
+      ".planning/phases/03-code-health-scoring-engine/03-03-PLAN.md",
+      ".planning/phases/03-code-health-scoring-engine/03-03-SUMMARY.md",
+      ".planning/phases/03-code-health-scoring-engine/03-RESEARCH.md"
+    ]
+  },
+  "recent_commits": [
+    {
+      "sha": "044ccc88823036df7cd67d0607a9cc2b9dd8fd09",
+      "committed_at": "2026-04-10T14:06:50Z",
+      "author": "Abhiman1206",
+      "message": "Final"
+    },
+    {
+      "sha": "4570ebdb0fea9f09b23243c539305b72e40f7794",
+      "committed_at": "2026-04-10T11:05:03Z",
+      "author": "Abhiman1206",
+      "message": "feat: sync Sunhacks updates and Obsidian Prism icon"
+    },
+    {
+      "sha": "8b4758e26a51ee992c7b0363c19a15ebc46667f1",
+      "committed_at": "2026-04-10T01:20:14Z",
+      "author": "Abhiman1206",
+      "message": "docs(08): record phase execution summaries and state"
+    },
+    {
+      "sha": "adc35c969537473f3ff6d360bf6caf972478842d",
+      "committed_at": "2026-04-10T01:18:28Z",
+      "author": "Abhiman1206",
+      "message": "feat(08-04): implement langchain-core stage pipeline orchestration"
+    },
+    {
+      "sha": "55d0139c9c3a912ecb79392248271cf57e9c8afa",
+      "committed_at": "2026-04-10T01:18:19Z",
+      "author": "Abhiman1206",
+      "message": "test(08-04): assert real langchain orchestration lifecycle"
+    },
+    {
+      "sha": "993f272e9a42493c3f61acdabaedf35e869e6d6a",
+      "committed_at": "2026-04-10T01:16:47Z",
+      "author": "Abhiman1206",
+      "message": "feat(08-03): support direct repository mining via pydriller"
+    },
+    {
+      "sha": "0b7e3625c52e63609f844fc3d01cd91532651a51",
+      "committed_at": "2026-04-10T01:16:41Z",
+      "author": "Abhiman1206",
+      "message": "test(08-03): add repository-path mining and checkpoint mode coverage"
+    },
+    {
+      "sha": "a667fc0e053b5efef5ea4a0f6e0739afa10c2877",
+      "committed_at": "2026-04-10T01:15:00Z",
+      "author": "Abhiman1206",
+      "message": "feat(08-02): add authenticated github/gitlab ingestion paths"
+    },
+    {
+      "sha": "bb7192d600841f448baae92e0abc281cb2adbb08",
+      "committed_at": "2026-04-10T01:14:51Z",
+      "author": "Abhiman1206",
+      "message": "test(08-02): define authenticated provider API behavior"
+    },
+    {
+      "sha": "683d8e916440d3bbbb469b0944e5460e60acee44",
+      "committed_at": "2026-04-10T01:13:20Z",
+      "author": "Abhiman1206",
+      "message": "feat(08-01): add provider auth-header and retry primitives"
+    }
+  ],
+  "notes": [
+    "Inactivity loss count equals number of days in the 90-day window with zero commits.",
+    "Total flag count aggregates inactivity days, low-activity weeks, stale files, and contributor concentration risk."
+  ]
+}

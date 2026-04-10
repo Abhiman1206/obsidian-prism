@@ -1,4 +1,5 @@
-import { RunStatus } from "../contracts";
+import { CreateRunRequest, CreateRunResponse, RunStatus } from "../contracts";
+import { buildAuthHeaders } from "./auth";
 import { resolveApiBaseUrl } from "./base-url";
 
 export interface RunRecord {
@@ -34,11 +35,31 @@ export async function getRunStatus(runId: string): Promise<RunRecord | null> {
   }
 }
 
-export function inferRunIds(repositoryId: string): string[] {
-  const safe = repositoryId.replaceAll("/", "-");
-  return [
-    `run-${safe}`,
-    "run-latest",
-    "run-123",
-  ];
+export async function createRun(payload: CreateRunRequest): Promise<CreateRunResponse | null> {
+  const baseUrl = resolveApiBaseUrl();
+
+  try {
+    const response = await fetch(`${baseUrl}/api/runs`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        ...buildAuthHeaders(),
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const body = (await response.json()) as CreateRunResponse;
+    if (!body || typeof body !== "object") {
+      return null;
+    }
+
+    return body;
+  } catch {
+    return null;
+  }
 }

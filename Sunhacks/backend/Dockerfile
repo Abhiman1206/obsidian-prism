@@ -11,6 +11,7 @@ RUN pip install --no-cache-dir \
     uvicorn[standard] \
     pydantic \
     httpx \
+    cryptography \
     radon \
     langchain-core \
     langchain-groq \

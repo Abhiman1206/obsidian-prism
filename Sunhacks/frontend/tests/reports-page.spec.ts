@@ -14,35 +14,6 @@ function mockReportsResponse(payload: unknown) {
       } as Response;
     }
 
-    if (url.includes("/api/repositories/analyze")) {
-      return {
-        ok: true,
-        json: async () => ({
-          provider: "github",
-          repository_url: "https://github.com/Abhiman1206/AI_APP.git",
-          repository_name: "Abhiman1206/AI_APP",
-          description: "Repo",
-          default_branch: "main",
-          stars: 42,
-          forks: 7,
-          watchers: 15,
-          open_issues: 3,
-          contributor_count: 5,
-          archived: false,
-          has_readme: true,
-          primary_language: "TypeScript",
-          languages: [],
-          topics: [],
-          recent_commits: [],
-          pushed_at: "2026-04-10T00:00:00Z",
-          health: {
-            score: 70,
-            summary: "Repository health score is 70/100.",
-          },
-        }),
-      } as Response;
-    }
-
     return {
       ok: false,
       json: async () => ({}),
@@ -134,12 +105,19 @@ describe("reports page", () => {
     expect(screen.getByText("health_score:api-gateway")).toBeInTheDocument();
   });
 
-  it("renders repository-based fallback report for unknown or empty runs", async () => {
+  it("renders empty-state messaging for unknown or empty runs", async () => {
     mockReportsResponse([]);
 
     render(await ReportsPage({ searchParams: Promise.resolve({ run_id: "run-empty" }) }));
 
-    expect(screen.getByText(/Projected 90-day cost of inaction/i)).toBeInTheDocument();
-    expect(screen.getByText("Evidence and Lineage")).toBeInTheDocument();
+    expect(screen.getByText("No executive reports available for this run.")).toBeInTheDocument();
+  });
+
+  it("asks for a selected run when run_id is missing", async () => {
+    mockReportsResponse([]);
+
+    render(await ReportsPage({ searchParams: Promise.resolve({}) }));
+
+    expect(screen.getByText(/Select a run first from the/i)).toBeInTheDocument();
   });
 });

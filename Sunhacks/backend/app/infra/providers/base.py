@@ -1,6 +1,7 @@
 from collections.abc import Callable
 from typing import Any, TypeVar
 
+from app.infra.providers.errors import ProviderRequestError
 from app.infra.secrets.provider_credentials import ProviderCredentialBundle
 
 T = TypeVar("T")
@@ -53,6 +54,11 @@ class BaseProviderClient:
         while True:
             try:
                 return operation()
+            except ProviderRequestError as exc:
+                attempt += 1
+                should_retry = exc.error_code in {"transient_error", "rate_limited", "upstream_error"}
+                if not should_retry or attempt >= retries:
+                    raise
             except Exception:
                 attempt += 1
                 if attempt >= retries:

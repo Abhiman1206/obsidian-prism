@@ -26,6 +26,9 @@ class HealthAnalystAgent(BaseSpecialistAgent):
     )
     tools = [fetch_python_file_contents, radon_analyze_files]
 
+    def required_memory_keys(self) -> list[str]:
+        return ["health_rows"]
+
     def execute_deterministic(self, memory: EpistemicMemory) -> dict[str, Any]:
         """Deterministic execution: identify files, fetch source, run Radon, score."""
         raw_commits = memory.read("raw_commits", [])

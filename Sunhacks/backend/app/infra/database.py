@@ -117,6 +117,23 @@ def init_db() -> None:
             PRIMARY KEY (repository_id, provider)
         );
 
+        CREATE TABLE IF NOT EXISTS repository_connections (
+            repository_id TEXT PRIMARY KEY,
+            provider TEXT NOT NULL,
+            repository_url TEXT NOT NULL,
+            repository_slug TEXT NOT NULL,
+            owner_user_id TEXT,
+            token_owner_login TEXT,
+            provider_user_id TEXT,
+            token_ciphertext TEXT NOT NULL,
+            scopes_json TEXT NOT NULL,
+            authorization_status TEXT NOT NULL,
+            authorization_reason TEXT NOT NULL DEFAULT 'provider_error',
+            run_ready INTEGER NOT NULL DEFAULT 0,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL
+        );
+
         CREATE TABLE IF NOT EXISTS agent_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             run_id TEXT NOT NULL,
@@ -131,6 +148,25 @@ def init_db() -> None:
         CREATE INDEX IF NOT EXISTS idx_executive_reports_run ON executive_reports(run_id);
         CREATE INDEX IF NOT EXISTS idx_lineage_run ON lineage_records(run_id);
         CREATE INDEX IF NOT EXISTS idx_agent_memory_run ON agent_memory(run_id);
+        CREATE INDEX IF NOT EXISTS idx_repository_connections_provider ON repository_connections(provider);
         """
+    )
+    existing_columns = {
+        row[1] for row in conn.execute("PRAGMA table_info(repository_connections)").fetchall()
+    }
+
+    if "owner_user_id" not in existing_columns:
+        conn.execute("ALTER TABLE repository_connections ADD COLUMN owner_user_id TEXT")
+    if "token_owner_login" not in existing_columns:
+        conn.execute("ALTER TABLE repository_connections ADD COLUMN token_owner_login TEXT")
+    if "provider_user_id" not in existing_columns:
+        conn.execute("ALTER TABLE repository_connections ADD COLUMN provider_user_id TEXT")
+    if "authorization_reason" not in existing_columns:
+        conn.execute(
+            "ALTER TABLE repository_connections ADD COLUMN authorization_reason TEXT NOT NULL DEFAULT 'provider_error'"
+        )
+
+    conn.execute(
+        "UPDATE repository_connections SET authorization_reason='provider_error' WHERE authorization_reason IS NULL OR authorization_reason = ''"
     )
     conn.commit()

@@ -4,6 +4,7 @@ import { RiskKpiGrid } from "../components/dashboard/risk-kpi-grid";
 import { analyzeRepository } from "../lib/api/repositories";
 import { RiskTable } from "../components/dashboard/risk-table";
 import { buildRiskDashboardSummary, getRiskForecasts } from "../lib/api/risk";
+import { FloatingPrism } from "../components/prism/floating-prism";
 
 type HomePageProps = {
   searchParams?: Promise<{
@@ -12,12 +13,28 @@ type HomePageProps = {
   }>;
 };
 
-const DEFAULT_REPOSITORY_URL = "https://github.com/Abhiman1206/AI_APP.git";
-
-function normalizeRepositoryUrl(raw: string | string[] | undefined): string {
+function normalizeRepositoryUrl(raw: string | string[] | undefined): string | null {
   const value = Array.isArray(raw) ? raw[0] : raw;
   const trimmed = value?.trim();
-  return trimmed && trimmed.length > 0 ? trimmed : DEFAULT_REPOSITORY_URL;
+  return trimmed && trimmed.length > 0 ? trimmed : null;
+}
+
+function formatBytes(sizeInBytes: number): string {
+  if (!Number.isFinite(sizeInBytes) || sizeInBytes <= 0) {
+    return "0 B";
+  }
+
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  let value = sizeInBytes;
+  let unitIndex = 0;
+
+  while (value >= 1024 && unitIndex < units.length - 1) {
+    value /= 1024;
+    unitIndex += 1;
+  }
+
+  const decimals = unitIndex === 0 ? 0 : 2;
+  return `${value.toFixed(decimals)} ${units[unitIndex]}`;
 }
 
 function buildCommitActivity(commits: Array<{ committed_at: string }>): number[] {
@@ -109,7 +126,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const runId = runIdSource?.trim() || "latest";
 
   const repositoryUrl = normalizeRepositoryUrl(resolvedSearchParams.repository_url);
-  const analysis = await analyzeRepository(repositoryUrl);
+  const analysis = repositoryUrl ? await analyzeRepository(repositoryUrl) : null;
 
   const forecasts = await getRiskForecasts(runId);
   const summary = buildRiskDashboardSummary(forecasts);
@@ -121,6 +138,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     { label: "Forks", value: String(analysis?.forks ?? 0) },
     { label: "Open Issues", value: String(analysis?.open_issues ?? 0) },
     { label: "Contributors", value: String(analysis?.contributor_count ?? 0) },
+    { label: "File Count", value: String(analysis?.file_count ?? 0) },
+    { label: "Repository Size", value: formatBytes(analysis?.repository_size_bytes ?? 0) },
     { label: "Primary Language", value: analysis?.primary_language ?? "Unknown" },
     { label: "Health Score", value: analysis?.health?.score !== undefined ? `${analysis.health.score}/100` : "N/A" },
   ];
@@ -142,13 +161,27 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       label: "Archived",
       value: analysis?.archived ? "Yes" : "No",
     },
+    {
+      label: "File Count",
+      value: String(analysis?.file_count ?? 0),
+    },
+    {
+      label: "Repository Size",
+      value: formatBytes(analysis?.repository_size_bytes ?? 0),
+    },
   ];
 
   return (
-    <section>
-      <div className="page-header">
-        <h1>Intelligent Dashboard</h1>
-        <p>Command Center • Run Scope: <span className="text-neon">{runId}</span></p>
+    <section className="dashboard-home">
+      <div className="page-header hero-header">
+        <div>
+          <h1>Intelligent Dashboard</h1>
+          <p>Command Center • Run Scope: <span className="text-neon">{runId}</span></p>
+          {!repositoryUrl ? (
+            <p style={{ marginTop: "0.4rem" }}>No repository selected. Add repository_url in the query to load live repository telemetry.</p>
+          ) : null}
+        </div>
+        <FloatingPrism />
       </div>
 
       <div className="dashboard-grid">
@@ -186,6 +219,10 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           )}
         </div>
       </div>
+
+      <footer className="dashboard-footer glass-panel" aria-label="dashboard-footer">
+        <p style={{ margin: 0 }}>Obsidian Prism • Premium Engineering Intelligence Surface</p>
+      </footer>
     </section>
   );
 }
