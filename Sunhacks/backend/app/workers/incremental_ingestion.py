@@ -8,9 +8,11 @@ from app.infra.miners.pydriller_miner import mine_incremental
 def run_incremental_ingestion(
     repository_id: str,
     provider: str,
-    commits: list[dict],
+    commits: list[dict] | None,
     checkpoint_store: CheckpointStore,
     persist_records: Callable[[list[dict]], None],
+    repository_path: str | None = None,
+    mine_commits: Callable[..., list[dict]] = mine_incremental,
 ) -> dict:
     checkpoint_store.save(
         repository_id=repository_id,
@@ -22,7 +24,11 @@ def run_incremental_ingestion(
 
     checkpoint = checkpoint_store.load(repository_id, provider)
     last_sha = checkpoint.get("last_processed_commit_sha")
-    mined_commits = mine_incremental(commits, last_sha)
+    mined_commits = mine_commits(
+        commits=commits,
+        last_processed_commit_sha=last_sha,
+        repository_path=repository_path,
+    )
 
     try:
         persist_ingestion_artifacts(mined_commits, persist_records)
