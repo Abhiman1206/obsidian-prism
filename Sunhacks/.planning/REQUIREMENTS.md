@@ -49,6 +49,12 @@
 - [ ] **PLAT-02**: Backend and frontend are containerized for deterministic runtime behavior.
 - [ ] **PLAT-03**: Application stack is deployable on Render with environment-driven configuration.
 
+### Integration Runtime Hardening
+
+- [x] **LCH-01**: Run orchestration uses real LangChain package runnables for staged execution.
+- [x] **API-01**: GitHub/GitLab authenticated APIs provide commits plus PR/MR, issue, and deployment signals.
+- [x] **MINER-01**: Incremental ingestion supports direct PyDriller repository mining with checkpoint-safe resume behavior.
+
 ## v2 Requirements
 
 ### Advanced Decision Intelligence
@@ -97,10 +103,13 @@
 | PLAT-01 | Phase 1 | Complete |
 | PLAT-02 | Phase 7 | Pending |
 | PLAT-03 | Phase 7 | Pending |
+| LCH-01 | Phase 8 | Complete |
+| API-01 | Phase 8 | Complete |
+| MINER-01 | Phase 8 | Complete |
 
 **Coverage:**
-- v1 requirements: 23 total
-- Mapped to phases: 23
+- v1 requirements: 26 total
+- Mapped to phases: 26
 - Unmapped: 0
 
 ---

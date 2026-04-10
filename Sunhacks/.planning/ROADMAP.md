@@ -137,13 +137,17 @@ Plans:
 | 5. Business Impact Synthesis | 0/3 | Not started | - |
 | 6. Responsive Next.js Dashboard and Reporting UX | 3/3 | Complete | 2026-04-10 |
 | 7. Reliability Hardening and Render Deployment | 6/6 | Complete | 2026-04-10 |
+| 8. LangChain + Authenticated Provider APIs + PyDriller Integration | 4/4 | Complete | 2026-04-10 |
 
 ### Phase 8: 7 Implod all this LangChain orchestration partially done modules; implement real LangChain packages usage, full authenticated GitHub/GitLab API tool integrations for PR/issues/deployments, and direct PyDriller package integration
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Replace pseudo orchestration/provider/miner paths with real LangChain, authenticated provider API integrations, and direct PyDriller mining while preserving deterministic run lifecycle behavior.
+**Requirements**: LCH-01, API-01, MINER-01
 **Depends on:** Phase 7
-**Plans:** 0 plans
+**Plans:** 4 plans
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 8 to break down)
+- [x] 08-01-PLAN.md - Harden integration contracts for provider auth and transport primitives.
+- [x] 08-02-PLAN.md - Implement authenticated GitHub/GitLab API integrations for commits, PR/MR, issues, and deployments.
+- [x] 08-03-PLAN.md - Implement direct PyDriller incremental mining with checkpoint-safe ingestion semantics.
+- [x] 08-04-PLAN.md - Replace pseudo orchestrator with real LangChain runnable pipeline wired to integrated stages.
