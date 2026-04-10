@@ -42,6 +42,8 @@ pnpm-debug.log*
 .cache/
 tmp/
 temp/
+*.db-shm
+*.db-wal
 
 # =========================
 # Environment and secrets
