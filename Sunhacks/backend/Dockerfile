@@ -11,7 +11,9 @@ RUN pip install --no-cache-dir \
     uvicorn[standard] \
     pydantic \
     httpx \
-    radon
+    radon \
+    langchain-core \
+    pydriller
 
 COPY app ./app
 
