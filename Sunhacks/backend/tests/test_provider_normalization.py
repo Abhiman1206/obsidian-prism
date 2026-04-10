@@ -153,3 +153,61 @@ def test_normalize_provider_payload_builds_canonical_commit_and_churn_shape() ->
         assert False, "Expected timeout validation failure"
     except ValueError:
         assert True
+
+
+def test_github_adapter_fetches_commits_via_authenticated_request_function() -> None:
+    captured = {"calls": []}
+
+    def request_get(endpoint: str, headers: dict[str, str], params: dict | None = None) -> dict:
+        captured["calls"].append((endpoint, headers, params))
+        return {
+            "items": [
+                {
+                    "sha": "abc123",
+                    "authored_at": "2026-04-01T00:00:00Z",
+                    "author_email": "dev@acme.com",
+                    "files": [{"path": "a.py", "additions": 1, "deletions": 0}],
+                }
+            ],
+            "next_cursor": None,
+        }
+
+    client = GitHubClient(timeout_seconds=5)
+    commits = client.fetch_commits_from_api(
+        repository="acme/platform",
+        token="gh-token",
+        request_get=request_get,
+    )
+
+    assert commits[0]["sha"] == "abc123"
+    assert captured["calls"][0][0] == "/repos/acme/platform/commits"
+    assert captured["calls"][0][1]["Authorization"] == "Bearer gh-token"
+
+
+def test_gitlab_adapter_fetches_commits_via_authenticated_request_function() -> None:
+    captured = {"calls": []}
+
+    def request_get(endpoint: str, headers: dict[str, str], params: dict | None = None) -> dict:
+        captured["calls"].append((endpoint, headers, params))
+        return {
+            "items": [
+                {
+                    "id": "gl-1",
+                    "authored_at": "2026-04-03T00:00:00Z",
+                    "author_email": "dev@acme.com",
+                    "files": [{"new_path": "c.py", "additions": 2, "deletions": 0}],
+                }
+            ],
+            "next_cursor": None,
+        }
+
+    client = GitLabClient(timeout_seconds=5)
+    commits = client.fetch_commits_from_api(
+        repository="acme/platform",
+        token="gl-token",
+        request_get=request_get,
+    )
+
+    assert commits[0]["sha"] == "gl-1"
+    assert captured["calls"][0][0] == "/projects/acme%2Fplatform/repository/commits"
+    assert captured["calls"][0][1]["PRIVATE-TOKEN"] == "gl-token"
