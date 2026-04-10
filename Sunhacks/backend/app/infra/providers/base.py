@@ -1,4 +1,9 @@
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any, TypeVar
+
+from app.infra.secrets.provider_credentials import ProviderCredentialBundle
+
+T = TypeVar("T")
 
 
 class BaseProviderClient:
@@ -27,3 +32,28 @@ class BaseProviderClient:
                 break
 
         return items
+
+    def build_auth_headers(self, credentials: ProviderCredentialBundle) -> dict[str, str]:
+        if credentials.provider == "github":
+            return {
+                "Authorization": f"Bearer {credentials.token}",
+                "Accept": "application/json",
+            }
+
+        return {
+            "PRIVATE-TOKEN": credentials.token,
+            "Accept": "application/json",
+        }
+
+    def run_with_retry(self, operation: Callable[[], T], retries: int = 3) -> T:
+        if retries <= 0:
+            raise ValueError("retries must be greater than zero")
+
+        attempt = 0
+        while True:
+            try:
+                return operation()
+            except Exception:
+                attempt += 1
+                if attempt >= retries:
+                    raise
