@@ -2,6 +2,7 @@ import React from "react";
 
 import { ReportEvidencePanel } from "../../components/reports/report-evidence-panel";
 import { ReportSummaryCard } from "../../components/reports/report-summary-card";
+import { getExecutiveReportPdfUrl } from "../../lib/api/reports";
 import { getExecutiveReports } from "../../lib/api/reports";
 
 type ReportsPageProps = {
@@ -29,6 +30,10 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
 
   const reports = await getExecutiveReports(runId, repositoryUrl);
   const selectedReport = reports[0];
+  const isFallbackReport = Boolean(selectedReport?.report_id?.startsWith("repo-fallback-"));
+  const pdfUrl = selectedReport
+    ? getExecutiveReportPdfUrl(selectedReport.run_id || runId, selectedReport.report_id)
+    : null;
 
   return (
     <section aria-label="Executive report content">
@@ -41,6 +46,25 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
         <>
           <ReportSummaryCard report={selectedReport} />
           <ReportEvidencePanel claims={selectedReport.claims} />
+
+          {pdfUrl && !isFallbackReport ? (
+            <section className="report-pdf-section" aria-label="Executive report PDF">
+              <h2>Executive Report PDF</h2>
+              <div className="report-pdf-actions">
+                <a href={pdfUrl} target="_blank" rel="noreferrer" className="report-pdf-link">
+                  Open PDF in new tab
+                </a>
+                <a href={pdfUrl} download className="report-pdf-link">
+                  Download PDF
+                </a>
+              </div>
+              <iframe
+                src={pdfUrl}
+                title="Executive report PDF preview"
+                className="report-pdf-frame"
+              />
+            </section>
+          ) : null}
         </>
       )}
     </section>

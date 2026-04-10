@@ -4,6 +4,12 @@ import { resolveApiBaseUrl } from "./base-url";
 
 const DEFAULT_REPOSITORY_URL = "https://github.com/Abhiman1206/AI_APP.git";
 
+type CreateRunResponse = {
+  run_id: string;
+  status: string;
+  created_at: string;
+};
+
 function createFallbackReportFromRepositoryAnalysis(runId: string, repositoryUrl: string): Promise<ExecutiveReportSummary[] | null> {
   return analyzeRepository(repositoryUrl).then((analysis) => {
     if (!analysis) {
@@ -90,6 +96,57 @@ function createFallbackReportFromRepositoryAnalysis(runId: string, repositoryUrl
   });
 }
 
+async function evaluateRepositoryAndFetchReports(repositoryUrl: string): Promise<ExecutiveReportSummary[] | null> {
+  const analysis = await analyzeRepository(repositoryUrl);
+  if (!analysis) {
+    return null;
+  }
+
+  const baseUrl = resolveApiBaseUrl();
+  const runRequestBody = {
+    repository_id: analysis.repository_name,
+    provider: "github",
+    branch: analysis.default_branch || null,
+  };
+
+  const runResponse = await fetch(`${baseUrl}/api/runs`, {
+    method: "POST",
+    cache: "no-store",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(runRequestBody),
+  });
+
+  if (!runResponse.ok) {
+    return null;
+  }
+
+  const runPayload = (await runResponse.json()) as CreateRunResponse;
+  if (!runPayload?.run_id) {
+    return null;
+  }
+
+  const reportsResponse = await fetch(`${baseUrl}/api/executive-reports/${encodeURIComponent(runPayload.run_id)}`, {
+    cache: "no-store",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+
+  if (!reportsResponse.ok) {
+    return null;
+  }
+
+  const generatedReports = (await reportsResponse.json()) as ExecutiveReportSummary[];
+  if (!Array.isArray(generatedReports) || generatedReports.length === 0) {
+    return null;
+  }
+
+  return [...generatedReports].sort((left, right) => right.generated_at.localeCompare(left.generated_at));
+}
+
 export async function getExecutiveReports(
   runId: string = "latest",
   repositoryUrl: string = DEFAULT_REPOSITORY_URL,
@@ -105,6 +162,10 @@ export async function getExecutiveReports(
     });
 
     if (!response.ok) {
+      const evaluatedReports = await evaluateRepositoryAndFetchReports(repositoryUrl);
+      if (evaluatedReports && evaluatedReports.length > 0) {
+        return evaluatedReports;
+      }
       return (await createFallbackReportFromRepositoryAnalysis(runId, repositoryUrl)) ?? [];
     }
 
@@ -114,11 +175,26 @@ export async function getExecutiveReports(
     }
 
     if (payload.length === 0) {
+      const evaluatedReports = await evaluateRepositoryAndFetchReports(repositoryUrl);
+      if (evaluatedReports && evaluatedReports.length > 0) {
+        return evaluatedReports;
+      }
       return (await createFallbackReportFromRepositoryAnalysis(runId, repositoryUrl)) ?? [];
     }
 
     return [...payload].sort((left, right) => right.generated_at.localeCompare(left.generated_at));
   } catch {
+    const evaluatedReports = await evaluateRepositoryAndFetchReports(repositoryUrl);
+    if (evaluatedReports && evaluatedReports.length > 0) {
+      return evaluatedReports;
+    }
     return (await createFallbackReportFromRepositoryAnalysis(runId, repositoryUrl)) ?? [];
   }
+}
+
+export function getExecutiveReportPdfUrl(runId: string, reportId: string): string {
+  const baseUrl = resolveApiBaseUrl();
+  const encodedRunId = encodeURIComponent(runId);
+  const encodedReportId = encodeURIComponent(reportId);
+  return `${baseUrl}/api/executive-reports/${encodedRunId}/${encodedReportId}/pdf`;
 }

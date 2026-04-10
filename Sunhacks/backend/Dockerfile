@@ -14,7 +14,8 @@ RUN pip install --no-cache-dir \
     radon \
     langchain-core \
     langchain-groq \
-    pydriller
+    pydriller \
+    reportlab
 
 COPY app ./app
 

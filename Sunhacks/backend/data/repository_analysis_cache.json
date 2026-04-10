@@ -88,5 +88,102 @@
       "score": 70,
       "summary": "Moderate repository health with room for process improvements."
     }
+  },
+  "Abhiman1206/obsidian-prism": {
+    "provider": "github",
+    "repository_url": "https://github.com/Abhiman1206/obsidian-prism",
+    "repository_name": "Abhiman1206/obsidian-prism",
+    "description": null,
+    "default_branch": "main",
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "open_issues": 0,
+    "contributor_count": 1,
+    "archived": false,
+    "has_readme": true,
+    "primary_language": "Python",
+    "languages": [
+      {
+        "language": "Python",
+        "bytes": 11851412,
+        "percentage": 83.58
+      },
+      {
+        "language": "JavaScript",
+        "bytes": 889637,
+        "percentage": 6.27
+      },
+      {
+        "language": "Shell",
+        "bytes": 674875,
+        "percentage": 4.76
+      },
+      {
+        "language": "TypeScript",
+        "bytes": 445533,
+        "percentage": 3.14
+      },
+      {
+        "language": "HTML",
+        "bytes": 204643,
+        "percentage": 1.44
+      },
+      {
+        "language": "CSS",
+        "bytes": 38137,
+        "percentage": 0.27
+      },
+      {
+        "language": "Java",
+        "bytes": 28068,
+        "percentage": 0.2
+      },
+      {
+        "language": "Go",
+        "bytes": 25173,
+        "percentage": 0.18
+      },
+      {
+        "language": "C++",
+        "bytes": 7821,
+        "percentage": 0.06
+      },
+      {
+        "language": "Batchfile",
+        "bytes": 7418,
+        "percentage": 0.05
+      },
+      {
+        "language": "Go Template",
+        "bytes": 4796,
+        "percentage": 0.03
+      },
+      {
+        "language": "Swift",
+        "bytes": 1521,
+        "percentage": 0.01
+      },
+      {
+        "language": "Dockerfile",
+        "bytes": 898,
+        "percentage": 0.01
+      }
+    ],
+    "topics": [],
+    "recent_commits": [
+      {
+        "sha": "03cf7551c59ccf58e547f79efb338d7c25bd7caa",
+        "message": "Initial import of project folder only",
+        "author": "Abhiman1206",
+        "committed_at": "2026-04-10T08:49:49Z",
+        "url": "https://github.com/Abhiman1206/obsidian-prism/commit/03cf7551c59ccf58e547f79efb338d7c25bd7caa"
+      }
+    ],
+    "pushed_at": "2026-04-10T11:05:18Z",
+    "health": {
+      "score": 70,
+      "summary": "Moderate repository health with room for process improvements."
+    }
   }
 }
