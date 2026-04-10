@@ -1,6 +1,8 @@
+from app.infra.providers.base import BaseProviderClient
 from app.infra.providers.github_client import GitHubClient
 from app.infra.providers.gitlab_client import GitLabClient
 from app.domain.ingestion.normalization import normalize_provider_payload
+from app.infra.secrets.provider_credentials import ProviderCredentialBundle
 
 
 
@@ -80,6 +82,37 @@ def test_provider_clients_enforce_timeout_boundaries() -> None:
         assert False, "Expected timeout validation failure"
     except ValueError:
         assert True
+
+
+def test_base_provider_client_builds_auth_headers_by_provider() -> None:
+    client = BaseProviderClient(timeout_seconds=5)
+
+    github_headers = client.build_auth_headers(
+        ProviderCredentialBundle(provider="github", token="gh-token", scopes=("repo",))
+    )
+    gitlab_headers = client.build_auth_headers(
+        ProviderCredentialBundle(provider="gitlab", token="gl-token", scopes=("api",))
+    )
+
+    assert github_headers["Authorization"] == "Bearer gh-token"
+    assert github_headers["Accept"] == "application/json"
+    assert gitlab_headers["PRIVATE-TOKEN"] == "gl-token"
+
+
+def test_base_provider_client_retries_transient_errors_with_upper_bound() -> None:
+    client = BaseProviderClient(timeout_seconds=5)
+    attempts = {"count": 0}
+
+    def flaky() -> dict:
+        attempts["count"] += 1
+        if attempts["count"] < 3:
+            raise RuntimeError("temporary failure")
+        return {"ok": True}
+
+    result = client.run_with_retry(flaky, retries=3)
+
+    assert result == {"ok": True}
+    assert attempts["count"] == 3
 
 
 def test_normalize_provider_payload_builds_canonical_commit_and_churn_shape() -> None:
