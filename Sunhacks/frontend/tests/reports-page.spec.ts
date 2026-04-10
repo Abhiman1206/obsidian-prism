@@ -4,10 +4,50 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import ReportsPage from "../app/reports/page";
 
 function mockReportsResponse(payload: unknown) {
-  vi.spyOn(global, "fetch").mockResolvedValue({
-    ok: true,
-    json: async () => payload,
-  } as Response);
+  vi.spyOn(global, "fetch").mockImplementation(async (input: RequestInfo | URL) => {
+    const url = String(input);
+
+    if (url.includes("/api/executive-reports/")) {
+      return {
+        ok: true,
+        json: async () => payload,
+      } as Response;
+    }
+
+    if (url.includes("/api/repositories/analyze")) {
+      return {
+        ok: true,
+        json: async () => ({
+          provider: "github",
+          repository_url: "https://github.com/Abhiman1206/AI_APP.git",
+          repository_name: "Abhiman1206/AI_APP",
+          description: "Repo",
+          default_branch: "main",
+          stars: 42,
+          forks: 7,
+          watchers: 15,
+          open_issues: 3,
+          contributor_count: 5,
+          archived: false,
+          has_readme: true,
+          primary_language: "TypeScript",
+          languages: [],
+          topics: [],
+          recent_commits: [],
+          pushed_at: "2026-04-10T00:00:00Z",
+          health: {
+            score: 70,
+            summary: "Repository health score is 70/100.",
+          },
+        }),
+      } as Response;
+    }
+
+    return {
+      ok: false,
+      json: async () => ({}),
+    } as Response;
+  });
 }
 
 afterEach(() => {
@@ -94,11 +134,12 @@ describe("reports page", () => {
     expect(screen.getByText("health_score:api-gateway")).toBeInTheDocument();
   });
 
-  it("renders an informative empty state for unknown or empty runs", async () => {
+  it("renders repository-based fallback report for unknown or empty runs", async () => {
     mockReportsResponse([]);
 
     render(await ReportsPage({ searchParams: Promise.resolve({ run_id: "run-empty" }) }));
 
-    expect(screen.getByText("No executive reports available for this run.")).toBeInTheDocument();
+    expect(screen.getByText(/Projected 90-day cost of inaction/i)).toBeInTheDocument();
+    expect(screen.getByText("Evidence and Lineage")).toBeInTheDocument();
   });
 });

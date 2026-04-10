@@ -7,8 +7,17 @@ import { getExecutiveReports } from "../../lib/api/reports";
 type ReportsPageProps = {
   searchParams?: Promise<{
     run_id?: string | string[];
+    repository_url?: string | string[];
   }>;
 };
+
+const DEFAULT_REPOSITORY_URL = "https://github.com/Abhiman1206/AI_APP.git";
+
+function normalizeRepositoryUrl(raw: string | string[] | undefined): string {
+  const value = Array.isArray(raw) ? raw[0] : raw;
+  const trimmed = value?.trim();
+  return trimmed && trimmed.length > 0 ? trimmed : DEFAULT_REPOSITORY_URL;
+}
 
 export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   const resolvedSearchParams = (await searchParams) ?? {};
@@ -16,8 +25,9 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
     ? resolvedSearchParams.run_id[0]
     : resolvedSearchParams.run_id;
   const runId = runIdSource?.trim() || "latest";
+  const repositoryUrl = normalizeRepositoryUrl(resolvedSearchParams.repository_url);
 
-  const reports = await getExecutiveReports(runId);
+  const reports = await getExecutiveReports(runId, repositoryUrl);
   const selectedReport = reports[0];
 
   return (

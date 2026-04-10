@@ -74,3 +74,43 @@ export interface ExecutiveReportSummary {
   claims: ExecutiveReportClaim[];
   generated_at: string;
 }
+
+export interface RepositoryLanguageStat {
+  language: string;
+  bytes: number;
+  percentage: number;
+}
+
+export interface RepositoryCommitInsight {
+  sha: string;
+  message: string;
+  author: string;
+  committed_at: string;
+  url: string;
+}
+
+export interface RepositoryHealthSummary {
+  score: number;
+  summary: string;
+}
+
+export interface RepositoryAnalysis {
+  provider: "github";
+  repository_url: string;
+  repository_name: string;
+  description: string | null;
+  default_branch: string;
+  stars: number;
+  forks: number;
+  watchers: number;
+  open_issues: number;
+  contributor_count: number;
+  archived: boolean;
+  has_readme: boolean;
+  primary_language: string | null;
+  languages: RepositoryLanguageStat[];
+  topics: string[];
+  recent_commits: RepositoryCommitInsight[];
+  pushed_at: string | null;
+  health: RepositoryHealthSummary;
+}

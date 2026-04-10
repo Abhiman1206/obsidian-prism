@@ -13,7 +13,8 @@ _RUN_STATUSES: dict[str, RunStatusResponse] = {}
 @router.post("", response_model=CreateRunResponse)
 def create_run(payload: CreateRunRequest) -> CreateRunResponse:
     now = utc_now()
-    run_id = f"run-{payload.repository_id}"
+    safe_id = payload.repository_id.replace("/", "-")
+    run_id = f"run-{safe_id}"
     _RUN_STATUSES[run_id] = RunStatusResponse(
         run_id=run_id,
         status=RunStatus.QUEUED,

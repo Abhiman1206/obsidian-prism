@@ -27,7 +27,7 @@ Translate engineering risk into financially actionable decisions for executives 
 
 ### Active
 
-- [ ] Run production backend on FastAPI in Docker and deploy on Render.
+- [x] Run production backend on FastAPI in Docker and deploy on Render.
 
 ### Out of Scope
 

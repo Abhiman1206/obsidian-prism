@@ -10,7 +10,7 @@ This roadmap builds a production-ready predictive engineering intelligence produ
 - [x] **Phase 2: Repository Ingestion and Evidence Graph** - Implement GitHub/GitLab/PyDriller ingestion with canonical storage and lineage.
 - [x] **Phase 3: Code Health Scoring Engine** - Build Radon-driven scoring pipeline and explainable component health outputs.
 - [x] **Phase 4: 90-Day Predictive Risk Forecasting** - Implement risk model, confidence scoring, and ranked risk outputs.
-- [ ] **Phase 5: Business Impact Synthesis** - Translate technical risk into executive-friendly cost-of-inaction reporting.
+- [x] **Phase 5: Business Impact Synthesis** - Translate technical risk into executive-friendly cost-of-inaction reporting.
 - [x] **Phase 6: Responsive Next.js Dashboard and Reporting UX** - Deliver mobile/desktop dashboards and report drill-down views.
 - [x] **Phase 7: Reliability Hardening and Render Deployment** - Add robustness, observability, Docker productionization, and Render rollout.
 
@@ -134,7 +134,7 @@ Plans:
 | 2. Repository Ingestion and Evidence Graph | 4/4 | Complete | 2026-04-10 |
 | 3. Code Health Scoring Engine | 3/3 | Complete | 2026-04-10 |
 | 4. 90-Day Predictive Risk Forecasting | 3/3 | Complete | 2026-04-10 |
-| 5. Business Impact Synthesis | 0/3 | Not started | - |
+| 5. Business Impact Synthesis | 3/3 | Complete | 2026-04-10 |
 | 6. Responsive Next.js Dashboard and Reporting UX | 3/3 | Complete | 2026-04-10 |
 | 7. Reliability Hardening and Render Deployment | 6/6 | Complete | 2026-04-10 |
 | 8. LangChain + Authenticated Provider APIs + PyDriller Integration | 4/4 | Complete | 2026-04-10 |

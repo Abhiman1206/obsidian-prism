@@ -21,9 +21,9 @@
 
 ### Predictive Risk Forecasting
 
-- [ ] **RISK-01**: System forecasts 90-day failure/degradation risk per component using historical and health features.
-- [ ] **RISK-02**: Risk output includes confidence and top contributing signals per component.
-- [ ] **RISK-03**: System returns ranked high-risk component list for each analysis run.
+- [x] **RISK-01**: System forecasts 90-day failure/degradation risk per component using historical and health features.
+- [x] **RISK-02**: Risk output includes confidence and top contributing signals per component.
+- [x] **RISK-03**: System returns ranked high-risk component list for each analysis run.
 
 ### Business Impact Translation
 
@@ -34,8 +34,8 @@
 ### Auditability and Reliability
 
 - [x] **AUDIT-01**: Every report claim can be traced to source metrics and data lineage records.
-- [ ] **AUDIT-02**: External API/tool calls are guarded by timeout and adaptive retry policies.
-- [ ] **AUDIT-03**: Pipeline can fail gracefully at task level without freezing entire run.
+- [x] **AUDIT-02**: External API/tool calls are guarded by timeout and adaptive retry policies.
+- [x] **AUDIT-03**: Pipeline can fail gracefully at task level without freezing entire run.
 
 ### Frontend Experience (Next.js)
 
@@ -46,8 +46,8 @@
 ### Backend and Deployment (FastAPI + Docker + Render)
 
 - [x] **PLAT-01**: Backend APIs are implemented in FastAPI with typed request/response contracts.
-- [ ] **PLAT-02**: Backend and frontend are containerized for deterministic runtime behavior.
-- [ ] **PLAT-03**: Application stack is deployable on Render with environment-driven configuration.
+- [x] **PLAT-02**: Backend and frontend are containerized for deterministic runtime behavior.
+- [x] **PLAT-03**: Application stack is deployable on Render with environment-driven configuration.
 
 ### Integration Runtime Hardening
 
@@ -88,21 +88,21 @@
 | HEALTH-01 | Phase 3 | Complete |
 | HEALTH-02 | Phase 3 | Complete |
 | HEALTH-03 | Phase 3 | Complete |
-| RISK-01 | Phase 4 | Pending |
-| RISK-02 | Phase 4 | Pending |
-| RISK-03 | Phase 4 | Pending |
+| RISK-01 | Phase 4 | Complete |
+| RISK-02 | Phase 4 | Complete |
+| RISK-03 | Phase 4 | Complete |
 | BIZ-01 | Phase 5 | Complete |
 | BIZ-02 | Phase 5 | Complete |
 | BIZ-03 | Phase 5 | Complete |
 | AUDIT-01 | Phase 2 | Complete |
-| AUDIT-02 | Phase 7 | Pending |
-| AUDIT-03 | Phase 7 | Pending |
+| AUDIT-02 | Phase 7 | Complete |
+| AUDIT-03 | Phase 7 | Complete |
 | UI-01 | Phase 6 | Complete |
 | UI-02 | Phase 6 | Complete |
 | UI-03 | Phase 6 | Complete |
 | PLAT-01 | Phase 1 | Complete |
-| PLAT-02 | Phase 7 | Pending |
-| PLAT-03 | Phase 7 | Pending |
+| PLAT-02 | Phase 7 | Complete |
+| PLAT-03 | Phase 7 | Complete |
 | LCH-01 | Phase 8 | Complete |
 | API-01 | Phase 8 | Complete |
 | MINER-01 | Phase 8 | Complete |

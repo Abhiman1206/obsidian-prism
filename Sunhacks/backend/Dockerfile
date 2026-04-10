@@ -13,6 +13,7 @@ RUN pip install --no-cache-dir \
     httpx \
     radon \
     langchain-core \
+    langchain-groq \
     pydriller
 
 COPY app ./app

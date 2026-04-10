@@ -1,0 +1,92 @@
+{
+  "Abhiman1206/AI_APP": {
+    "provider": "github",
+    "repository_url": "https://github.com/Abhiman1206/AI_APP",
+    "repository_name": "Abhiman1206/AI_APP",
+    "description": null,
+    "default_branch": "main",
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "open_issues": 0,
+    "contributor_count": 1,
+    "archived": false,
+    "has_readme": true,
+    "primary_language": "Python",
+    "languages": [
+      {
+        "language": "Python",
+        "bytes": 230724,
+        "percentage": 63.3
+      },
+      {
+        "language": "TypeScript",
+        "bytes": 83922,
+        "percentage": 23.02
+      },
+      {
+        "language": "HTML",
+        "bytes": 36074,
+        "percentage": 9.9
+      },
+      {
+        "language": "CSS",
+        "bytes": 12882,
+        "percentage": 3.53
+      },
+      {
+        "language": "JavaScript",
+        "bytes": 559,
+        "percentage": 0.15
+      },
+      {
+        "language": "Dockerfile",
+        "bytes": 349,
+        "percentage": 0.1
+      }
+    ],
+    "topics": [],
+    "recent_commits": [
+      {
+        "sha": "3be3cfc0875f9a9d16b4f91e2e3cd0d787d8a460",
+        "message": "end",
+        "author": "Abhiman1206",
+        "committed_at": "2026-03-22T15:37:42Z",
+        "url": "https://github.com/Abhiman1206/AI_APP/commit/3be3cfc0875f9a9d16b4f91e2e3cd0d787d8a460"
+      },
+      {
+        "sha": "1a34fd4795426f7bf7f7c60f460126e62d1fbb22",
+        "message": "Fix Vercel 404: use NEXT_PUBLIC_API_URL for backend proxy, add vercel.json",
+        "author": "Abhiman1206",
+        "committed_at": "2026-03-10T05:23:12Z",
+        "url": "https://github.com/Abhiman1206/AI_APP/commit/1a34fd4795426f7bf7f7c60f460126e62d1fbb22"
+      },
+      {
+        "sha": "1c8c7b50e52ed8142d995c15f5865b59a463b5a5",
+        "message": "Fix: pin httpx<0.28.0 to resolve groq SDK proxies TypeError",
+        "author": "Abhiman1206",
+        "committed_at": "2026-03-10T05:15:00Z",
+        "url": "https://github.com/Abhiman1206/AI_APP/commit/1c8c7b50e52ed8142d995c15f5865b59a463b5a5"
+      },
+      {
+        "sha": "839350e5386faf36c788486a5032caf5025cac5e",
+        "message": "Fix railway.toml builder name",
+        "author": "Abhiman1206",
+        "committed_at": "2026-03-10T05:09:52Z",
+        "url": "https://github.com/Abhiman1206/AI_APP/commit/839350e5386faf36c788486a5032caf5025cac5e"
+      },
+      {
+        "sha": "d7a1dcbe6df1987a88c00025ad25634bfb39a838",
+        "message": "Fix deployment context for Railway and Vercel monorepo",
+        "author": "Abhiman1206",
+        "committed_at": "2026-03-10T05:05:26Z",
+        "url": "https://github.com/Abhiman1206/AI_APP/commit/d7a1dcbe6df1987a88c00025ad25634bfb39a838"
+      }
+    ],
+    "pushed_at": "2026-03-22T15:39:53Z",
+    "health": {
+      "score": 70,
+      "summary": "Moderate repository health with room for process improvements."
+    }
+  }
+}

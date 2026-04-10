@@ -45,5 +45,6 @@ def run_provider_ingestion(
         commits=commits,
     )
     canonical["cadence"] = extract_cadence_signals(cadence_source)
+    canonical["raw_commits"] = commits
 
     return canonical

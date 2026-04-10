@@ -1,5 +1,7 @@
 # Predictive Engineering Intelligence Platform
 
+![Pasted Image 2](assets/images/pasted-image-2.png)
+
 Containerized backend and frontend for deployment on Render.
 
 ## Services

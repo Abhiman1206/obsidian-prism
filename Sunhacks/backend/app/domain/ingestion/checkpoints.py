@@ -1,10 +1,14 @@
-class CheckpointStore:
-    def __init__(self) -> None:
-        self._store: dict[tuple[str, str], dict] = {}
+from app.infra.database import get_db
 
+
+class CheckpointStore:
     def load(self, repository_id: str, provider: str) -> dict:
-        key = (repository_id, provider)
-        if key not in self._store:
+        conn = get_db()
+        row = conn.execute(
+            "SELECT * FROM checkpoints WHERE repository_id = ? AND provider = ?",
+            (repository_id, provider),
+        ).fetchone()
+        if row is None:
             return {
                 "repository_id": repository_id,
                 "provider": provider,
@@ -12,8 +16,13 @@ class CheckpointStore:
                 "last_processed_at": None,
                 "status": "idle",
             }
-
-        return self._store[key]
+        return {
+            "repository_id": row["repository_id"],
+            "provider": row["provider"],
+            "last_processed_commit_sha": row["last_sha"],
+            "last_processed_at": row["last_processed_at"],
+            "status": row["status"],
+        }
 
     def save(
         self,
@@ -23,12 +32,21 @@ class CheckpointStore:
         last_processed_at: str | None,
         status: str,
     ) -> dict:
-        payload = {
+        conn = get_db()
+        conn.execute(
+            """INSERT INTO checkpoints (repository_id, provider, last_sha, last_processed_at, status)
+               VALUES (?, ?, ?, ?, ?)
+               ON CONFLICT(repository_id, provider)
+               DO UPDATE SET last_sha=excluded.last_sha,
+                             last_processed_at=excluded.last_processed_at,
+                             status=excluded.status""",
+            (repository_id, provider, last_processed_commit_sha, last_processed_at, status),
+        )
+        conn.commit()
+        return {
             "repository_id": repository_id,
             "provider": provider,
             "last_processed_commit_sha": last_processed_commit_sha,
             "last_processed_at": last_processed_at,
             "status": status,
         }
-        self._store[(repository_id, provider)] = payload
-        return payload

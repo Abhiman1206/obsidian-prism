@@ -1,4 +1,5 @@
 import { RiskForecast } from "../contracts";
+import { resolveApiBaseUrl } from "./base-url";
 
 export type RiskDashboardSummary = {
   totalComponents: number;
@@ -9,7 +10,7 @@ export type RiskDashboardSummary = {
 const HIGH_RISK_THRESHOLD = 0.6;
 
 export async function getRiskForecasts(runId: string = "latest"): Promise<RiskForecast[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
+  const baseUrl = resolveApiBaseUrl();
 
   try {
     const response = await fetch(`${baseUrl}/api/risk-forecasts/${runId}`, {

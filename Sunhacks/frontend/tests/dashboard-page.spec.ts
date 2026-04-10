@@ -3,11 +3,61 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import HomePage from "../app/page";
 
-function mockRiskResponse(payload: unknown) {
-  vi.spyOn(global, "fetch").mockResolvedValue({
-    ok: true,
-    json: async () => payload,
-  } as Response);
+const analysisPayload = {
+  provider: "github",
+  repository_url: "https://github.com/Abhiman1206/AI_APP.git",
+  repository_name: "Abhiman1206/AI_APP",
+  description: "Test repository",
+  default_branch: "main",
+  stars: 42,
+  forks: 7,
+  watchers: 15,
+  open_issues: 3,
+  contributor_count: 5,
+  archived: false,
+  has_readme: true,
+  primary_language: "TypeScript",
+  languages: [],
+  topics: [],
+  recent_commits: [
+    {
+      sha: "abc123",
+      message: "feat: live metrics",
+      author: "dev",
+      committed_at: new Date().toISOString(),
+      url: "https://github.com/Abhiman1206/AI_APP/commit/abc123",
+    },
+  ],
+  pushed_at: new Date().toISOString(),
+  health: {
+    score: 70,
+    summary: "Repository health score is 70/100.",
+  },
+};
+
+function mockDashboardResponses(riskPayload: unknown, repositoryPayload: unknown = analysisPayload) {
+  vi.spyOn(global, "fetch").mockImplementation(async (input: RequestInfo | URL) => {
+    const url = String(input);
+
+    if (url.includes("/api/risk-forecasts/")) {
+      return {
+        ok: true,
+        json: async () => riskPayload,
+      } as Response;
+    }
+
+    if (url.includes("/api/repositories/analyze")) {
+      return {
+        ok: true,
+        json: async () => repositoryPayload,
+      } as Response;
+    }
+
+    return {
+      ok: false,
+      json: async () => ({}),
+    } as Response;
+  });
 }
 
 afterEach(() => {
@@ -16,7 +66,7 @@ afterEach(() => {
 
 describe("dashboard page", () => {
   it("renders ranked component rows in descending risk order", async () => {
-    mockRiskResponse([
+    mockDashboardResponses([
       {
         component_id: "worker-engine",
         horizon_days: 90,
@@ -49,7 +99,7 @@ describe("dashboard page", () => {
   });
 
   it("renders KPI cards from risk data", async () => {
-    mockRiskResponse([
+    mockDashboardResponses([
       {
         component_id: "api-gateway",
         horizon_days: 90,
@@ -75,21 +125,21 @@ describe("dashboard page", () => {
 
     render(await HomePage({ searchParams: Promise.resolve({ run_id: "run-123" }) }));
 
-    expect(screen.getByText("Total Components")).toBeInTheDocument();
+    expect(screen.getByText("Repository Stars")).toBeInTheDocument();
+    expect(screen.getByText("42")).toBeInTheDocument();
+    expect(screen.getByText("Open Issues")).toBeInTheDocument();
     expect(screen.getByText("3")).toBeInTheDocument();
-    expect(screen.getByText("High Risk Components")).toBeInTheDocument();
-    expect(screen.getByText("2")).toBeInTheDocument();
-    expect(screen.getByText("Average Confidence")).toBeInTheDocument();
+    expect(screen.getByText("Avg. Confidence")).toBeInTheDocument();
     expect(screen.getByText("77%"))
       .toBeInTheDocument();
     expect(screen.getByRole("table", { name: "Ranked risk components" })).toBeInTheDocument();
   });
 
   it("renders empty-state copy when API returns no records", async () => {
-    mockRiskResponse([]);
+    mockDashboardResponses([]);
 
     render(await HomePage({ searchParams: Promise.resolve({ run_id: "run-empty" }) }));
 
-    expect(screen.getByText("No risk forecast data available for this run.")).toBeInTheDocument();
+    expect(screen.getByText("No risk forecast data available for this run. Showing repository risk baseline KPIs.")).toBeInTheDocument();
   });
 });
