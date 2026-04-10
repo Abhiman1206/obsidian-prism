@@ -12,10 +12,11 @@ class ProviderCredentialBundle:
 
 class ProviderCredentialsService:
     def prepare(self, payload: ProviderAuthPayload) -> ProviderCredentialBundle:
+        scopes = tuple(scope.strip() for scope in payload.scopes if scope.strip())
         return ProviderCredentialBundle(
             provider=payload.provider,
-            token=payload.access_token,
-            scopes=tuple(payload.scopes),
+            token=payload.access_token.strip(),
+            scopes=scopes,
         )
 
     def is_authorized(self, bundle: ProviderCredentialBundle) -> bool:
