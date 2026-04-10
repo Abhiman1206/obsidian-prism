@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
 from app.main import app
+from app.workers.langchain_orchestrator import get_orchestration_engine
 
 
 def test_create_run_returns_typed_response() -> None:
@@ -85,3 +86,27 @@ def test_invalid_create_run_payload_returns_error_response() -> None:
     body = response.json()
     assert "error_code" in body
     assert "message" in body
+
+
+def test_orchestration_engine_reports_real_langchain_usage() -> None:
+    assert get_orchestration_engine() == "langchain-core"
+
+
+def test_run_success_message_mentions_langchain_pipeline() -> None:
+    client = TestClient(app)
+    payload = {
+        "repository_id": "repo-langchain-ready",
+        "provider": "github",
+        "branch": "main",
+    }
+
+    response = client.post("/api/runs", json=payload)
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["status"] == "succeeded"
+
+    status_response = client.get(f"/api/runs/{body['run_id']}")
+    assert status_response.status_code == 200
+    status_body = status_response.json()
+    assert "langchain" in (status_body.get("message") or "").lower()
