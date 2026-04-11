@@ -9,8 +9,6 @@ Predictive Engineering Intelligence is a full-stack analytics application with:
 
 The repository is configured for local development and container-based deployment (Render).
 
-## Architecture
-
 ## System Architecture
 
 ### Logical View
@@ -46,6 +44,42 @@ flowchart LR
 - Infrastructure layer:
 	- `backend/app/infra` initializes storage and wiring.
 	- Data artifacts are persisted in `backend/data`.
+
+### Core Runtime Components
+
+- Supervisor/orchestration entrypoint:
+	- Coordinates multi-step analysis lifecycle per run in backend service flow.
+- Specialist analysis capabilities:
+	- Repository mining, health scoring, risk forecasting, and executive synthesis.
+- Evidence and traceability model:
+	- Every analysis run is expected to map outputs back to source data for auditability.
+
+### Data Flow (End-to-End)
+
+1. User starts an analysis from the frontend dashboard.
+2. Frontend triggers backend run-oriented endpoints.
+3. Backend extracts repository and engineering signals.
+4. Health and risk scoring logic computes ranked outcomes.
+5. Executive report payloads are generated and returned.
+6. Results and evidence artifacts are persisted for retrieval and lineage views.
+
+### Architectural Patterns Used
+
+- Supervisor + Specialist workflow:
+	- Central orchestration with task-focused analysis modules.
+- Guarded tool/API access:
+	- External integrations should be wrapped with retry and timeout controls.
+- Evidence-first reporting:
+	- Claims in reports map to source metrics and run context.
+
+### Scaling Guidance
+
+- Small scale (0-20 repositories):
+	- Single backend deployment is sufficient.
+- Medium scale (20-200 repositories):
+	- Separate asynchronous worker execution from API path.
+- Large scale (200+ repositories):
+	- Split ingestion, scoring, and report generation into independently scaled services.
 
 ### Runtime Interaction
 
