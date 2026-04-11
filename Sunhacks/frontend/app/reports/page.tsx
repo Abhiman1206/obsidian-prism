@@ -5,6 +5,7 @@ import { ReportEvidencePanel } from "../../components/reports/report-evidence-pa
 import { ReportSummaryCard } from "../../components/reports/report-summary-card";
 import { getExecutiveReportPdfUrl } from "../../lib/api/reports";
 import { getExecutiveReports } from "../../lib/api/reports";
+import { getLatestExecutiveReport } from "../../lib/api/reports";
 import { getNonTechnicalReportPdfUrl } from "../../lib/api/reports";
 import { getTechnicalReportPdfUrl } from "../../lib/api/reports";
 
@@ -23,7 +24,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   const repositoryUrlSource = Array.isArray(resolvedSearchParams.repository_url)
     ? resolvedSearchParams.repository_url[0]
     : resolvedSearchParams.repository_url;
-  const runId = runIdSource?.trim() || "";
+  const requestedRunId = runIdSource?.trim() || "";
   const repositoryUrl = repositoryUrlSource?.trim() || "";
 
   const runsParams = new URLSearchParams();
@@ -32,8 +33,10 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   }
   const runsHref = runsParams.toString() ? `/runs?${runsParams.toString()}` : "/runs";
 
-  const reports = await getExecutiveReports(runId);
-  const selectedReport = reports[0];
+  const latestReport = await getLatestExecutiveReport();
+  const reports = requestedRunId ? await getExecutiveReports(requestedRunId) : [];
+  const selectedReport = reports[0] ?? latestReport;
+  const runId = selectedReport?.run_id || requestedRunId;
   const legacyPdfUrl = selectedReport
     ? getExecutiveReportPdfUrl(selectedReport.run_id || runId, selectedReport.report_id)
     : null;
@@ -47,41 +50,42 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   return (
     <section aria-label="Executive report content">
       <h1>Executive Report</h1>
-      <p>Report scope: {runId || "not selected"}</p>
 
-      {!runId ? (
-        <p>
-          Select a run first from the <Link href={runsHref}>runs page</Link> to view an executive report.
-        </p>
-      ) : !selectedReport ? (
-        <p>No executive reports available for this run.</p>
+      {!selectedReport ? (
+        <p>No executive reports available yet.</p>
       ) : (
         <>
           <ReportSummaryCard report={selectedReport} />
           <ReportEvidencePanel claims={selectedReport.claims} />
+        </>
+      )}
 
-          {legacyPdfUrl ? (
-            <section className="report-pdf-section" aria-label="Executive report PDF">
-              <h2>Generate Report PDFs</h2>
-              <div className="report-pdf-actions">
-                <a href={technicalPdfUrl || legacyPdfUrl} target="_blank" rel="noreferrer" className="report-pdf-link">
-                  Generate Technical Member PDF
-                </a>
-                <a href={nonTechnicalPdfUrl || legacyPdfUrl} target="_blank" rel="noreferrer" className="report-pdf-link">
-                  Generate Non-Technical Member PDF
-                </a>
-                <a href={nonTechnicalPdfUrl || legacyPdfUrl} download className="report-pdf-link">
-                  Download Non-Technical PDF
-                </a>
-              </div>
+      {legacyPdfUrl ? (
+        <section className="report-pdf-section" aria-label="Executive report PDFs">
+          <h2>Report PDFs</h2>
+          <div className="report-pdf-grid">
+            <article className="report-pdf-item" aria-label="Technical report PDF">
+              <h3>Technical Report</h3>
+              <iframe src={technicalPdfUrl || legacyPdfUrl} title="Technical report PDF" className="report-pdf-frame" />
+            </article>
+            <article className="report-pdf-item" aria-label="Non-technical report PDF">
+              <h3>Non-Technical Report</h3>
               <iframe
                 src={nonTechnicalPdfUrl || legacyPdfUrl}
-                title="Non-technical report PDF preview"
+                title="Non-technical report PDF"
                 className="report-pdf-frame"
               />
-            </section>
-          ) : null}
-        </>
+            </article>
+          </div>
+        </section>
+      ) : (
+        <section className="report-pdf-section" aria-label="Executive report PDF">
+          <h2>Report PDFs</h2>
+          <p>
+            Trigger a fresh analysis from the <Link href={runsHref}>runs page</Link> to generate new technical and
+            non-technical PDFs.
+          </p>
+        </section>
       )}
     </section>
   );

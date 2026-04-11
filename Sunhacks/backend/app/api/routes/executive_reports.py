@@ -11,6 +11,11 @@ from app.domain.business.repository import EXECUTIVE_REPORT_REPOSITORY
 router = APIRouter(prefix="/api/executive-reports", tags=["executive-reports"])
 
 
+@router.get("/latest")
+def get_latest_executive_report() -> dict | None:
+    return EXECUTIVE_REPORT_REPOSITORY.get_latest()
+
+
 @router.get("/{run_id}")
 def get_executive_reports(run_id: str) -> list[dict]:
     return EXECUTIVE_REPORT_REPOSITORY.get_by_run(run_id)

@@ -110,14 +110,14 @@ describe("reports page", () => {
 
     render(await ReportsPage({ searchParams: Promise.resolve({ run_id: "run-empty" }) }));
 
-    expect(screen.getByText("No executive reports available for this run.")).toBeInTheDocument();
+    expect(screen.getByText("No executive reports available yet.")).toBeInTheDocument();
   });
 
-  it("asks for a selected run when run_id is missing", async () => {
+  it("renders empty-state messaging when no report exists and run_id is missing", async () => {
     mockReportsResponse([]);
 
     render(await ReportsPage({ searchParams: Promise.resolve({}) }));
 
-    expect(screen.getByText(/Select a run first from the/i)).toBeInTheDocument();
+    expect(screen.getByText("No executive reports available yet.")).toBeInTheDocument();
   });
 });

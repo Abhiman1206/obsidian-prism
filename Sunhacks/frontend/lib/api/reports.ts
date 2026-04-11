@@ -1,5 +1,36 @@
 import { ExecutiveReportSummary } from "../contracts";
 import { resolveApiBaseUrl } from "./base-url";
+
+export async function getLatestExecutiveReport(): Promise<ExecutiveReportSummary | null> {
+  const baseUrl = resolveApiBaseUrl();
+
+  try {
+    const response = await fetch(`${baseUrl}/api/executive-reports/latest`, {
+      cache: "no-store",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const payload = (await response.json()) as ExecutiveReportSummary | null;
+    if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+      return null;
+    }
+
+    if (typeof payload.run_id !== "string" || typeof payload.report_id !== "string") {
+      return null;
+    }
+
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
 export async function getExecutiveReports(runId: string): Promise<ExecutiveReportSummary[]> {
   const baseUrl = resolveApiBaseUrl();
   const normalizedRunId = runId.trim();
