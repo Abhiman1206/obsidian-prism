@@ -1,44 +1,259 @@
-**Product Requirements Document (PRD): Predictive Engineering Intelligence Platform**
+# Predictive Engineering Intelligence Platform
 
-**1. Product Overview & Objective**
-The Predictive Engineering Intelligence Platform is a multi-agent AI system designed to transform raw code repository data into actionable, executive-level business intelligence. By connecting to GitHub or GitLab, the system will analyze code change history, bug patterns, test coverage, and deployment frequency to assign a health score to codebase components. Ultimately, it predicts which components are most likely to cause failures or slowdowns within the next 90 days and translates these technical risks into a business-impact report for non-technical CEOs, explicitly quantifying the cost of inaction in terms of time and money.
+![Predictive Engineering Intelligence Platform](assets/images/pasted-image-2.png)
 
-**2. Target Audience**
-*   **Primary:** Non-technical CEOs and executives who need to understand engineering risks in terms of financial impact and resource allocation.
-*   **Secondary:** CTOs and Engineering Leaders who require predictive insights to prioritize technical debt reduction and refactoring efforts.
+Predictive Engineering Intelligence is a full-stack analytics application with:
 
-**3. System Architecture: Multi-Agent Orchestration**
-To handle the complexity of this task, the platform will utilize a **Supervisor Architecture** (or "Chain-of-Agents" orchestrator), where a primary orchestrator agent decomposes the overarching analytical goal into sub-tasks and delegates them to specialized worker agents. This system will be built using **LangChain**, utilizing its modular design of chains, tools, and memory systems.
+- FastAPI backend for data ingestion, scoring, forecasting, and report APIs
+- Next.js frontend for dashboard-driven exploration and executive views
 
-**Agent Roles & Responsibilities:**
-*   **Project Manager (Orchestrator) Agent:** Receives the high-level request, plans the workflow, delegates tasks to specialist agents, and manages dependencies between them.
-*   **Data Mining Agent:** Specializes in data retrieval. Equipped with the **GitHub/GitLab API** and **PyDriller** tools, it mines commit histories, deployment frequencies, and historical bug patterns.
-*   **Code Health Analyst Agent:** Acts as the quantitative evaluator. It uses the **Radon** tool to compute cyclomatic complexity, maintainability indices, and test coverage trends, assigning a real-time health score to each module.
-*   **Predictive Risk Agent:** Synthesizes historical bug frequencies, code complexity, and deployment velocity to forecast which components are statistically most likely to fail or degrade in the next 90 days.
-*   **Business Synthesis (Report Writer) Agent:** Translates the predictive technical data into a CEO-friendly narrative. It applies the **Measuring Business Value pattern** to convert technical metrics (e.g., predicted failure rates) into tangible business KPIs, calculating the projected financial cost of inaction (e.g., developer hours lost, potential downtime revenue loss).
+The repository is configured for local development and container-based deployment (Render).
 
-**4. Core Technologies & Tool Integration**
-The agents will interact with the external environment through a defined **Tool Registry**, which acts as a catalog of available functions. 
-*   **LangChain:** The underlying orchestration framework. It will manage the "Sense-Reason-Plan-Act" loops, allowing agents to form reasoning chains and interact with the designated tools.
-*   **GitHub/GitLab API Tool:** Wrapped as a standard LangChain tool to fetch pull requests, issue tracking, and deployment data.
-*   **PyDriller Tool:** Used by the Data Mining Agent to extract granular commit-level data, developer churn, and modified files over time.
-*   **Radon Tool:** A Python tool for computing raw code metrics (complexity, raw metrics, maintainability index). 
+## System Architecture
 
-**5. Operational Workflow (The Cognitive Loop)**
-The platform will execute tasks using a defined multi-agent workflow:
-1.  **Task Delegation:** The Orchestrator Agent receives the command to analyze a specific repository and delegates data-gathering to the Data Mining and Code Health agents.
-2.  **Tool Execution:** The specialist agents invoke PyDriller, Radon, and the GitHub API. They pass this structured data back to a **Shared Epistemic Memory** (a central scratchpad) so all agents share a unified ground truth.
-3.  **Predictive Modeling:** The Predictive Risk agent pulls from the shared memory, applying statistical reasoning to identify high-risk components (e.g., highly complex files modified frequently by multiple developers with low test coverage).
-4.  **Executive Synthesis:** The Report Writer Agent aggregates the findings. It specifically avoids engineering jargon and outputs a structured business-impact report highlighting the 90-day risk forecast and the estimated cost of inaction.
+### Logical View
 
-**6. Non-Functional Requirements: Robustness & Fault Tolerance**
-Because the system relies heavily on external APIs (GitHub) and computationally intensive tasks, it must implement strict robustness patterns:
-*   **Watchdog Timeout Supervisor:** Wraps all GitHub API and PyDriller tool calls with a timeout mechanism. If an API hangs or rate-limits the system, the watchdog prevents the entire multi-agent workflow from freezing.
-*   **Adaptive Retry with Prompt Mutation:** If the Radon tool fails to parse a specific file or the GitHub API returns a transient error, the agent will intelligently retry the operation using exponential backoff before escalating a failure.
-*   **Causal Dependency Graph (Auditability):** Every metric generated in the CEO report will be traceable. If the CEO questions why a specific payment module is flagged as a $50,000 risk, the system can traverse the causal graph backward to show the exact PyDriller commit history, Radon complexity score, and reasoning chain that produced the claim.
+```mermaid
+flowchart LR
+		U[User Browser] --> FE[Frontend - Next.js App Router\nPort 3000]
+		FE --> API[Backend - FastAPI\nPort 10000]
 
-**7. Success Metrics & Evaluation**
-To ensure the system delivers enterprise-grade value, it will be evaluated against custom, domain-specific metrics:
-*   **Predictive Accuracy Delta:** Measuring the predicted 90-day component failures against actual future bug reports in the repository.
-*   **Task Completion Rate & Tool Call Success Rate:** Monitoring how often the agents successfully invoke PyDriller and Radon without unhandled exceptions.
-*   **Business Translation Efficacy:** Evaluated via human-in-the-loop feedback from executives to ensure the generated reports accurately translate technical debt into actionable financial insights.
+		API --> ROUTES[API Routes Layer\nhealth, runs, repositories, lineage,\nhealth_scores, risk_forecasts, executive_reports]
+		ROUTES --> DOMAIN[Domain and Service Layer\nScoring, forecasting, report orchestration]
+		DOMAIN --> INFRA[Infrastructure Layer\nDB init, persistence, external tooling]
+
+		INFRA --> DATA[(Local Data Store\nbackend/data)]
+		API --> HEALTH[/health and /healthz]
+
+		subgraph Deploy
+			FE
+			API
+		end
+```
+
+### Layered Breakdown
+
+- Presentation layer:
+	- Next.js UI pages and navigation shell in `frontend/app` and `frontend/components`.
+	- Handles user interaction, route transitions, and API consumption.
+- API layer:
+	- FastAPI routers in `backend/app/api/routes` expose domain capabilities as HTTP contracts.
+	- Centralized middleware covers CORS and request identity propagation.
+- Domain layer:
+	- Business logic under `backend/app/domain` computes engineering health, risk, and reporting outputs.
+- Infrastructure layer:
+	- `backend/app/infra` initializes storage and wiring.
+	- Data artifacts are persisted in `backend/data`.
+
+### Core Runtime Components
+
+- Supervisor/orchestration entrypoint:
+	- Coordinates multi-step analysis lifecycle per run in backend service flow.
+- Specialist analysis capabilities:
+	- Repository mining, health scoring, risk forecasting, and executive synthesis.
+- Evidence and traceability model:
+	- Every analysis run is expected to map outputs back to source data for auditability.
+
+### Data Flow (End-to-End)
+
+1. User starts an analysis from the frontend dashboard.
+2. Frontend triggers backend run-oriented endpoints.
+3. Backend extracts repository and engineering signals.
+4. Health and risk scoring logic computes ranked outcomes.
+5. Executive report payloads are generated and returned.
+6. Results and evidence artifacts are persisted for retrieval and lineage views.
+
+### Architectural Patterns Used
+
+- Supervisor + Specialist workflow:
+	- Central orchestration with task-focused analysis modules.
+- Guarded tool/API access:
+	- External integrations should be wrapped with retry and timeout controls.
+- Evidence-first reporting:
+	- Claims in reports map to source metrics and run context.
+
+### Scaling Guidance
+
+- Small scale (0-20 repositories):
+	- Single backend deployment is sufficient.
+- Medium scale (20-200 repositories):
+	- Separate asynchronous worker execution from API path.
+- Large scale (200+ repositories):
+	- Split ingestion, scoring, and report generation into independently scaled services.
+
+### Runtime Interaction
+
+1. Browser requests dashboard/report pages from Next.js.
+2. Frontend calls FastAPI endpoints using configured `NEXT_PUBLIC_API_BASE_URL`.
+3. Backend routes validate input and invoke domain logic.
+4. Domain logic reads/writes through infrastructure services and local data store.
+5. API returns structured JSON; frontend renders insights and report views.
+
+### High-Level Flow
+
+1. Frontend (Next.js) calls backend API endpoints.
+2. Backend (FastAPI) initializes persistence on startup and serves domain routes.
+3. Backend computes metrics/insights and returns structured responses.
+4. Frontend renders dashboards and report views from backend data.
+
+### Main Components
+
+- Frontend: `frontend/`
+	- App Router pages: `frontend/app/`
+	- Shared UI shell: `frontend/components/layout/app-shell.tsx`
+	- Styles: `frontend/styles/`
+- Backend: `backend/`
+	- FastAPI entrypoint: `backend/app/main.py`
+	- API routes: `backend/app/api/routes/`
+		- `health.py`
+		- `health_scores.py`
+		- `lineage.py`
+		- `executive_reports.py`
+		- `repositories.py`
+		- `risk_forecasts.py`
+		- `runs.py`
+	- Tests: `backend/tests/`
+
+### Runtime Ports
+
+- Frontend: `3000`
+- Backend: `10000`
+
+## Prerequisites
+
+- Node.js 20+
+- npm 9+
+- Python 3.12+ (3.14 also works in this repo)
+- Optional: Docker (for containerized runs)
+
+## Local Setup
+
+### 1) Clone and install frontend dependencies
+
+```powershell
+git clone https://github.com/Abhiman1206/obsidian-prism.git
+cd obsidian-prism
+npm --prefix frontend install
+```
+
+### 2) Create/activate Python environment for backend
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+Install backend dependencies (mirrors `backend/Dockerfile`):
+
+```powershell
+python -m pip install --upgrade pip
+pip install fastapi "uvicorn[standard]" pydantic httpx cryptography radon langchain-core langchain-groq pydriller reportlab pytest
+```
+
+### 3) Environment configuration
+
+Backend optional variables:
+
+- `ALLOWED_ORIGINS` (comma-separated CORS origins)
+- `APP_ENV` (`development` by default)
+- `PORT` (defaults to `10000` in containerized backend)
+
+Frontend required for API integration:
+
+- `NEXT_PUBLIC_API_BASE_URL` (example: `http://localhost:10000`)
+
+You can set frontend env in `frontend/.env.local`:
+
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:10000
+```
+
+## Execution Steps
+
+### Start Backend (Terminal 1)
+
+```powershell
+cd backend
+python -m uvicorn app.main:app --host 0.0.0.0 --port 10000
+```
+
+### Start Frontend (Terminal 2)
+
+```powershell
+cd frontend
+npm run dev -- --hostname 0.0.0.0 --port 3000
+```
+
+Open:
+
+- Frontend: `http://localhost:3000`
+- Backend health: `http://localhost:10000/healthz`
+
+## Validation and Quality Checks
+
+### Backend tests
+
+```powershell
+$env:PYTHONPATH="backend"
+pytest backend/tests -q
+```
+
+### Frontend type checks
+
+```powershell
+npm --prefix frontend run typecheck
+```
+
+### Frontend build
+
+```powershell
+npm --prefix frontend run build
+```
+
+## Container Build
+
+Build images:
+
+```powershell
+docker build -f backend/Dockerfile backend
+docker build -f frontend/Dockerfile frontend
+```
+
+Run backend container:
+
+```powershell
+docker run --rm -p 10000:10000 -e PORT=10000 <backend-image-id>
+```
+
+Run frontend container:
+
+```powershell
+docker run --rm -p 3000:3000 -e PORT=3000 -e NEXT_PUBLIC_API_BASE_URL=http://host.docker.internal:10000 <frontend-image-id>
+```
+
+## Deployment (Render)
+
+`render.yaml` defines two web services:
+
+- `pei-backend`
+	- Dockerfile: `backend/Dockerfile`
+	- Health check: `/healthz`
+	- Env vars: `PORT`, `PYTHONUNBUFFERED`
+- `pei-frontend`
+	- Dockerfile: `frontend/Dockerfile`
+	- Env vars: `PORT`, `NEXT_PUBLIC_API_BASE_URL`
+
+## API Health Endpoints
+
+- `GET /healthz`
+- `GET /health`
+
+## Troubleshooting
+
+- Frontend cannot reach backend:
+	- Confirm backend is running on `10000`.
+	- Confirm `NEXT_PUBLIC_API_BASE_URL` points to the correct backend URL.
+- CORS issues:
+	- Set `ALLOWED_ORIGINS` on backend to include the frontend origin.
+- Build-time Next.js route errors:
+	- Client components using router search params must be wrapped by `Suspense` in server layout boundaries.
