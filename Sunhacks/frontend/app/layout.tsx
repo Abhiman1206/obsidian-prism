@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AppShell from "../components/layout/app-shell";
+import { Suspense } from "react";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
@@ -15,7 +16,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body>
-        <AppShell>{children}</AppShell>
+        <Suspense fallback={<div />}>
+          <AppShell>{children}</AppShell>
+        </Suspense>
       </body>
     </html>
   );
