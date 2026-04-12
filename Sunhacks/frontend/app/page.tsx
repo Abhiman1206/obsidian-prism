@@ -5,6 +5,7 @@ import { analyzeRepository } from "../lib/api/repositories";
 import { RiskTable } from "../components/dashboard/risk-table";
 import { buildRiskDashboardSummary, getRiskForecasts } from "../lib/api/risk";
 import { FloatingPrism } from "../components/prism/floating-prism";
+import { getExecutiveReportPdfUrl, getLatestExecutiveReport, getNonTechnicalReportPdfUrl, getTechnicalReportPdfUrl } from "../lib/api/reports";
 
 type HomePageProps = {
   searchParams?: Promise<{
@@ -130,6 +131,18 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
   const forecasts = await getRiskForecasts(runId);
   const summary = buildRiskDashboardSummary(forecasts);
+  const latestReport = await getLatestExecutiveReport();
+  const latestRunId = latestReport?.run_id || "";
+  const latestReportId = latestReport?.report_id || "";
+  const technicalPdfUrl = latestReport
+    ? getTechnicalReportPdfUrl(latestRunId, latestReportId)
+    : null;
+  const nonTechnicalPdfUrl = latestReport
+    ? getNonTechnicalReportPdfUrl(latestRunId, latestReportId)
+    : null;
+  const fallbackPdfUrl = latestReport
+    ? getExecutiveReportPdfUrl(latestRunId, latestReportId)
+    : null;
   const commitActivity = buildCommitActivity(analysis?.recent_commits ?? []);
   const hasCommitSeries = commitActivity.some((value) => value > 0);
 
@@ -216,6 +229,40 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             </>
           ) : (
             <RiskTable forecasts={forecasts} />
+          )}
+        </div>
+
+        <div className="glass-panel" style={{ gridColumn: "span 12", padding: "1.5rem", marginTop: "1rem" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+            <h3 style={{ margin: 0, fontWeight: 600 }}>Latest Report PDFs</h3>
+            {latestReport ? (
+              <span style={{ fontSize: "0.85rem", color: "var(--muted)" }}>{latestReport.generated_at}</span>
+            ) : null}
+          </div>
+
+          {!latestReport ? (
+            <p style={{ margin: 0, color: "var(--muted)" }}>
+              No report PDFs available yet. Trigger an analysis run from the repository page.
+            </p>
+          ) : (
+            <div className="report-pdf-grid">
+              <article className="report-pdf-item" aria-label="Technical report PDF">
+                <h3>Technical Report</h3>
+                <iframe
+                  src={technicalPdfUrl || fallbackPdfUrl || undefined}
+                  title="Technical report PDF"
+                  className="report-pdf-frame"
+                />
+              </article>
+              <article className="report-pdf-item" aria-label="Non-technical report PDF">
+                <h3>Non-Technical Report</h3>
+                <iframe
+                  src={nonTechnicalPdfUrl || fallbackPdfUrl || undefined}
+                  title="Non-technical report PDF"
+                  className="report-pdf-frame"
+                />
+              </article>
+            </div>
           )}
         </div>
       </div>

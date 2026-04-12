@@ -36,5 +36,16 @@ class ExecutiveReportRepository:
             results.append(json.loads(row["report_json"] or "{}"))
         return results
 
+    def get_latest(self) -> dict | None:
+        conn = get_db()
+        row = conn.execute(
+            """SELECT report_json FROM executive_reports
+               ORDER BY generated_at DESC
+               LIMIT 1"""
+        ).fetchone()
+        if row is None:
+            return None
+        return json.loads(row["report_json"] or "{}")
+
 
 EXECUTIVE_REPORT_REPOSITORY = ExecutiveReportRepository()
